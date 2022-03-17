@@ -6,11 +6,12 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Set;
 
+@SequenceGenerator(name = "ACCOUNT_SEQ_GENERATOR", sequenceName = "ACCOUNT_SEQ", initialValue = 1, allocationSize = 1)
 @Getter @Setter
 @Entity
 public class Account {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="ACCOUNT_SEQ_GENERATOR")
     private Integer id;
 
     private String email;

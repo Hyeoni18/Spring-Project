@@ -1,5 +1,9 @@
 package hello.hyeoni.springproject.board;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +22,32 @@ public class BoardController {
     }
 
     @GetMapping
-    public String getBoard(Model model) {
-        model.addAttribute("listBoards", boardRepository.findAll());
+    public String getBoard(@RequestParam(defaultValue = "1") int page, Model model) {
+        var pageSize = 5;
+        Pageable pageable = PageRequest.of(page-1, pageSize, Sort.by("id").descending());
+        Page<Board> boards = boardRepository.findAll(pageable);
+        model.addAttribute("list", boards);
+        return pagingModel(boards, model, pageSize, page);
+    }
+
+    private String pagingModel(Page<Board> boards, Model model, int pageSize, int page) {
+        var total = boards.getTotalElements();
+        var totalPages = boards.getTotalPages();
+        var totPage = total % pageSize == 0 ? Math.floor(total/pageSize) : Math.floor(total/pageSize)+1 ;
+        var pageBlock = Math.ceil(totPage / (double)pageSize);
+        var curBlock = Math.ceil(page / (double)pageSize);
+        var targetPage = (curBlock - 1) * pageSize - (pageSize - 1);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);
+        var previous = curBlock > 1 ? targetPage : 1;
+        targetPage = curBlock * pageSize + 1;
+        var next = pageBlock > curBlock ? targetPage : totalPages;
+        model.addAttribute("previous", (int)previous);
+        model.addAttribute("next", (int)next);
+        var pPage = targetPage-pageSize;
+        var nPage = pageBlock > curBlock ? next - 1 : totalPages;
+        model.addAttribute("pPage", pPage);
+        model.addAttribute("nPage", nPage);
         return "board/board";
     }
 
