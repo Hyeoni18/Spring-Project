@@ -22,10 +22,16 @@ public class BoardController {
     }
 
     @GetMapping
-    public String getBoard(@RequestParam(defaultValue = "1") int page, Model model) {
+    public String getBoard(@RequestParam(defaultValue = "1") int page, Board board, Model model) {
+        System.out.println(board.getTitle());
+        if(board.getTitle() == null) {
+            board.setTitle("");
+        }
+        String title = board.getTitle();
+        System.out.println(title);
         var pageSize = 5;
         Pageable pageable = PageRequest.of(page-1, pageSize, Sort.by("id").descending());
-        Page<Board> boards = boardRepository.findAll(pageable);
+        Page<Board> boards = boardRepository.findByTitle(title, pageable);
         model.addAttribute("list", boards);
         return pagingModel(boards, model, pageSize, page);
     }
