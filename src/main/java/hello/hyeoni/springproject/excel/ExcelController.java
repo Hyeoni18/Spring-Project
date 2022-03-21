@@ -1,11 +1,13 @@
 package hello.hyeoni.springproject.excel;
 
 import hello.hyeoni.springproject.board.Board;
+import hello.hyeoni.springproject.board.BoardDto;
 import hello.hyeoni.springproject.board.BoardRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.Color;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -21,6 +24,9 @@ import java.util.List;
 public class ExcelController {
 
     @Autowired private BoardRepository boardRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping
     public String excelMain() {
@@ -75,5 +81,18 @@ public class ExcelController {
         cellStyle.setBorderTop(BorderStyle.THIN);
         cellStyle.setBorderRight(BorderStyle.THIN);
         cellStyle.setBorderBottom(BorderStyle.THIN);
+    }
+
+    @GetMapping("/api/custom")
+    public void downloadExcelDto(HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+
+        ExcelRenderResource resource
+                = ExcelRenderResourceFactory.prepareRenderResource(BoardDto.class, new SXSSFWorkbook());
+
+        List<Board> list = boardRepository.findAll();
+        List<BoardDto> excelDtos = Arrays.asList(modelMapper.map(list, BoardDto[].class));
+        ExcelFile excelFile = new OneSheetExcelFile<>(excelDtos, BoardDto.class); //workbook 생성
+        excelFile.write(response.getOutputStream());
     }
 }

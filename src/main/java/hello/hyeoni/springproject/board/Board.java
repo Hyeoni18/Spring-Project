@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @SequenceGenerator(name = "BOARD_SEQ_GENERATOR", sequenceName = "BOARD_SEQ", initialValue = 1, allocationSize = 1)
-@Getter @Setter
+@Getter 
 @Entity
 public class Board {
 

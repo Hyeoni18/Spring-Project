@@ -23,7 +23,7 @@ class ExcelControllerTest {
 
     @Test
     public void test() throws Exception {
-        mockMvc.perform(get("/excel/api/download"))
+        mockMvc.perform(get("/excel/api/custom"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

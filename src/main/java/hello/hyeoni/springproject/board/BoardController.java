@@ -24,9 +24,9 @@ public class BoardController {
     @GetMapping
     public String getBoard(@RequestParam(defaultValue = "1") int page, Board board, Model model) {
 
-        if(board.getTitle() == null) {
-            board.setTitle("");
-        }
+//        if(board.getTitle() == null) {
+//            board.setTitle("");
+//        }
 
         String title = board.getTitle();
 
