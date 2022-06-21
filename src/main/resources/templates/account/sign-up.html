@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”>
+<head th:replace="fragments.html :: head"></head>
+<body class="authentication-bg">
+
+<div class="account-pages mt-5 mb-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="card">
+                    <!-- Logo-->
+                    <div class="card-header pt-4 pb-4 text-center bg-primary">
+                        <span><img src="/images/logo.png" alt="" height="18"></span>
+                    </div>
+
+                    <div class="card-body p-4">
+
+                        <div class="text-center w-75 m-auto">
+                            <h4 class="text-dark-50 text-center mt-0 font-weight-bold">Free Sign Up</h4>
+                            <p class="text-muted mb-4">Don't have an account? Create your account, it takes less than a minute </p>
+                        </div>
+
+                        <form action="#" method="post" th:action="@{/sign-up}" th:object="${signUpForm}" novalidate>
+
+                            <div class="form-group">
+                                <label for="nickname">닉네임</label>
+                                <input class="form-control" type="text" id="nickname" placeholder="Enter your nickname" th:field="*{nickname}" aria-describedby="nicknameHelp" required minlength="3" maxlength="20">
+                                <small id="nicknameHelp" class="form-text text-muted">
+                                    공백없이 문자와 숫자로만 3자 이상 20자 이내로 입력하세요. 가입후에 변경할 수 있습니다.
+                                </small>
+                                <small class="invalid-feedback">닉네임을 입력하세요.</small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Nickname Error</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">이메일</label>
+                                <input class="form-control" type="email" id="email" th:field="*{email}" required placeholder="your@email.com" aria-describedby="emailHelp">
+                                <small id="emailHelp" class="form-text text-muted"> 사용자의 이메일을 공개하지 않습니다. </small>
+                                <small class="invalid-feedback">이메일을 입력하세요.</small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">패스워드</label>
+                                <input class="form-control" type="password" id="password" th:field="*{password}" aria-describedby="passwordHelp" required minlength="8" maxlength="50">
+                                <small id="passwordHelp" class="form-text text-muted"> 8자 이상 50자 이내로 입력하세요. 영문자, 숫자, 특수기호를 사용할 수 있으며 공백은 사용할 수 없습니다. </small>
+                                <small class="invalid-feedback">패스워드를 입력하세요.</small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</small>
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" type="submit"
+                                        aria-describedby="submitHelp">가입하기</button>
+                                <small id="submitHelp" class="form-text text-muted"> <a href="#">약관</a>에 동의하시면 가입하기 버튼을 클릭하세요. </small>
+                            </div>
+
+                        </form>
+                    </div> <!-- end card-body -->
+                </div>
+                <!-- end card -->
+
+                <div class="row mt-3">
+                    <div class="col-12 text-center">
+                        <p class="text-muted">Already have account? <a href="#" th:href="@{/login}" class="text-dark ml-1"><b>Log In</b></a></p>
+                    </div> <!-- end col-->
+                </div>
+                <!-- end row -->
+
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end page -->
+
+<div th:replace="fragments.html :: footer"></div>
+<script th:replace="fragments.html :: form-validation"></script>
+</body>
+</html>

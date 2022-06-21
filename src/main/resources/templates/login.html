@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”>
+<head th:replace="fragments.html :: head"></head>
+<body class="authentication-bg">
+
+<div class="account-pages mt-5 mb-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="card">
+
+                    <!-- Logo -->
+                    <div class="card-header pt-4 pb-4 text-center bg-primary">
+                        <span><img src="/images/logo.png" alt="" height="18"></span>
+                    </div>
+
+                    <div class="card-body p-4">
+
+                        <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                            <p>이메일(또는 닉네임)과 패스워드가 정확하지 않습니다.</p>
+                            <p>또는 확인되지 않은 이메일을 사용했습니다. 이메일을 확인해 주세요.</p>
+                            <p>
+                                확인 후 다시 입력하시거나, <a href="#" th:href="@{/find-passsword}">패스워드 찾기</a>를 이용하세요.
+                            </p>
+                        </div>
+
+                        <form action="#" th:action="@{/login}" method="post" novalidate>
+                            <div class="form-group">
+                                <label for="username">이메일 또는 닉네임</label>
+                                <input class="form-control" type="text" id="username" name="username" placeholder="your@email.com" aria-describedby="emailHelp" required>
+                                <small id="emailHelp" class="form-text text-muted">
+                                    가입할 때 사용한 이메일 또는 닉네임을 입력하세요.
+                                </small>
+                                <small class="invalid-feedback">이메일을 입력하세요.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <a href="#" th:href="@{/emaillogin}" class="text-muted float-right"><small>Forgot your password? Login without password</small></a>
+                                <label for="password">Password</label>
+                                <input class="form-control" type="password" id="password" name="password" aria-describedby="passwordHelp" required>
+                                <small class="invalid-feedback">패스워드를 입력하세요.</small>
+                            </div>
+
+                            <div class="form-group mb-0 text-center">
+                                <button class="btn btn-primary" type="submit"> 로그인 </button>
+                            </div>
+                        </form>
+                    </div> <!-- end card-body -->
+                </div>
+                <!-- end card -->
+
+                <div class="row mt-3">
+                    <div class="col-12 text-center">
+                        <p class="text-muted">Don't have an account? <a href="#" th:href="@{/sign-up}" class="text-dark ml-1"><b>Sign Up</b></a></p>
+                    </div> <!-- end col -->
+                </div>
+                <!-- end row -->
+
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end page -->
+
+<div th:replace="fragments.html :: footer"></div>
+<div th:replace="fragments.html :: js-zip"></div>
+</body>
+</html>

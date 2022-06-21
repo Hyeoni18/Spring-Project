@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- header -->
+<head th:fragment="head">
+    <meta charset="utf-8" />
+    <title>Hyeoni's-project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="/images/favicon.ico">
+
+    <!-- third party css -->
+    <link href="/css/vendor/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+    <!-- third party css end -->
+
+    <!-- App css -->
+    <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/app.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<!-- tob-nev -->
+<div class="navbar-custom topnav-navbar" th:fragment="top-nav">
+    <div class="container-fluid">
+
+        <!-- LOGO -->
+        <a href="/" class="topnav-logo">
+                            <span class="topnav-logo-lg">
+                                <img src="/images/logo-dark.png" alt="" height="16">
+                            </span>
+        </a>
+        <ul class="list-unstyled topbar-right-menu float-right mb-0">
+            <li style="margin-top: 17px;" sec:authorize="!isAuthenticated()"><a href="#" th:href="@{/login}" class="btn btn-outline-primary">로그인</a></li>
+            <li style="margin-top: 17px; margin-left: 10px;" sec:authorize="!isAuthenticated()"><a href="#" th:href="@{/sign-up}" class="btn btn-outline-primary">회원가입</a></li>
+            <li sec:authorize="isAuthenticated()">
+                <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
+                    <button class="dropdown-item" type="submit">로그아웃</button>
+                </form>
+            </li>
+        </ul>
+        <a class="navbar-toggle"  data-toggle="collapse" data-target="#topnav-menu-content">
+            <div class="lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </a>
+        <div class="app-search">
+
+        </div>
+    </div>
+</div>
+
+<!-- main nev-->
+<div class="topnav" th:fragment="main-nav">
+    <div class="container-fluid">
+        <nav class="navbar navbar-dark navbar-expand-lg topnav-menu">
+
+            <div class="collapse navbar-collapse" id="topnav-menu-content">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">
+                            <i class="mdi mdi-speedometer mr-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="javascript: void(0);" id="topnav-pages" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="mdi mdi-google-pages mr-1"></i>Function <div class="arrow-down"></div>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                            <a href="board" class="dropdown-item">Board</a>
+                            <a href="excel" class="dropdown-item">Excel</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<!-- Right Sidebar -->
+<div class="right-bar" th:fragment="right-bar">>
+
+    <div class="rightbar-title">
+        <a href="javascript:void(0);" class="right-bar-toggle float-right">
+            <i class="dripicons-cross noti-icon"></i>
+        </a>
+        <h5 class="m-0">Settings</h5>
+    </div>
+
+    <div class="slimscroll-menu rightbar-content">
+
+        <!-- Settings -->
+        <hr class="mt-0" />
+        <h5 class="pl-3">Basic Settings</h5>
+        <hr class="mb-0" />
+
+        <div class="p-3">
+            <div class="custom-control custom-checkbox mb-2">
+                <input type="checkbox" class="custom-control-input" id="notifications-check" checked>
+                <label class="custom-control-label" for="notifications-check">Notifications</label>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-2">
+                <input type="checkbox" class="custom-control-input" id="api-access-check">
+                <label class="custom-control-label" for="api-access-check">API Access</label>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-2">
+                <input type="checkbox" class="custom-control-input" id="auto-updates-check" checked>
+                <label class="custom-control-label" for="auto-updates-check">Auto Updates</label>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-2">
+                <input type="checkbox" class="custom-control-input" id="online-status-check" checked>
+                <label class="custom-control-label" for="online-status-check">Online Status</label>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-2">
+                <input type="checkbox" class="custom-control-input" id="auto-payout-check">
+                <label class="custom-control-label" for="auto-payout-check">Auto Payout</label>
+            </div>
+
+        </div>
+
+
+        <!-- Timeline -->
+        <hr class="mt-0" />
+        <h5 class="pl-3">Recent Activity</h5>
+        <hr class="mb-0" />
+        <div class="pl-2 pr-2">
+            <div class="timeline-alt">
+                <div class="timeline-item">
+                    <i class="mdi mdi-upload bg-info-lighten text-info timeline-icon"></i>
+                    <div class="timeline-item-info">
+                        <a href="#" class="text-info font-weight-bold mb-1 d-block">You sold an item</a>
+                        <small>Paul Burgess just purchased “Hyper - Admin Dashboard”!</small>
+                        <p>
+                            <small class="text-muted">5 minutes ago</small>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <i class="mdi mdi-airplane bg-primary-lighten text-primary timeline-icon"></i>
+                    <div class="timeline-item-info">
+                        <a href="#" class="text-primary font-weight-bold mb-1 d-block">Product on the Bootstrap Market</a>
+                        <small>Dave Gamache added
+                            <span class="font-weight-bold">Admin Dashboard</span>
+                        </small>
+                        <p>
+                            <small class="text-muted">30 minutes ago</small>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <i class="mdi mdi-microphone bg-info-lighten text-info timeline-icon"></i>
+                    <div class="timeline-item-info">
+                        <a href="#" class="text-info font-weight-bold mb-1 d-block">Robert Delaney</a>
+                        <small>Send you message
+                            <span class="font-weight-bold">"Are you there?"</span>
+                        </small>
+                        <p>
+                            <small class="text-muted">2 hours ago</small>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <i class="mdi mdi-upload bg-primary-lighten text-primary timeline-icon"></i>
+                    <div class="timeline-item-info">
+                        <a href="#" class="text-primary font-weight-bold mb-1 d-block">Audrey Tobey</a>
+                        <small>Uploaded a photo
+                            <span class="font-weight-bold">"Error.jpg"</span>
+                        </small>
+                        <p>
+                            <small class="text-muted">14 hours ago</small>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <i class="mdi mdi-upload bg-info-lighten text-info timeline-icon"></i>
+                    <div class="timeline-item-info">
+                        <a href="#" class="text-info font-weight-bold mb-1 d-block">You sold an item</a>
+                        <small>Paul Burgess just purchased “Hyper - Admin Dashboard”!</small>
+                        <p>
+                            <small class="text-muted">1 day ago</small>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Right-bar -->
+
+<footer class="footer" th:fragment="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    2022 © Hyeoni
+                </div>
+                <div class="col-md-6">
+                    <div class="text-md-right footer-links d-none d-md-block">
+                        <a href="javascript: void(0);">About</a>
+                        <a href="javascript: void(0);">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</footer>
+
+<div th:fragment="js-zip">
+    <!-- App js -->
+    <script src="/js/app.min.js"></script>
+
+    <!-- third party js -->
+    <script src="/js/vendor/Chart.bundle.min.js"></script>
+    <script src="/js/vendor/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="/js/vendor/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- third party js ends -->
+
+    <!-- demo app -->
+    <script src="/js/pages/demo.dashboard.js"></script>
+    <!-- end demo js-->
+</div>
+
+<script type="application/javascript" th:fragment="form-validation">
+    (function () {
+        'use strict';
+
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+
+            // Loop over them and prevent submission
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        }, false)
+    }())
+</script>
