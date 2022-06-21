@@ -1,8 +1,6 @@
 package hello.hyeoni.springproject.excel;
 
-import hello.hyeoni.springproject.board.Board;
-import hello.hyeoni.springproject.board.BoardDto;
-import hello.hyeoni.springproject.board.BoardRepository;
+import hello.hyeoni.springproject.board.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -24,6 +22,8 @@ import java.util.List;
 public class ExcelController {
 
     @Autowired private BoardRepository boardRepository;
+
+    @Autowired private LectureRepository lectureRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -86,13 +86,28 @@ public class ExcelController {
     @GetMapping("/api/custom")
     public void downloadExcelDto(HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=\"boardList.xlsx\"");
 
-        ExcelRenderResource resource
-                = ExcelRenderResourceFactory.prepareRenderResource(BoardDto.class, new SXSSFWorkbook());
+//        ExcelRenderResource resource
+//                = ExcelRenderResourceFactory.prepareRenderResource(BoardDto.class, new SXSSFWorkbook());
 
         List<Board> list = boardRepository.findAll();
         List<BoardDto> excelDtos = Arrays.asList(modelMapper.map(list, BoardDto[].class));
         ExcelFile excelFile = new OneSheetExcelFile<>(excelDtos, BoardDto.class); //workbook 생성
+        excelFile.write(response.getOutputStream());
+    }
+
+    @GetMapping("/api/custom/lecture")
+    public void downloadExcelDtoLecture(HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=\"lectureList.xlsx\"");
+
+//        ExcelRenderResource resource
+//                = ExcelRenderResourceFactory.prepareRenderResource(LectureDto.class, new SXSSFWorkbook());
+
+        List<Lecture> list = lectureRepository.findAll();   //download 정보 조회
+        List<LectureDto> excelDtos = Arrays.asList(modelMapper.map(list, LectureDto[].class));
+        ExcelFile excelFile = new OneSheetExcelFile<>(excelDtos, LectureDto.class); //workbook 생성
         excelFile.write(response.getOutputStream());
     }
 }
