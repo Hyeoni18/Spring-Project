@@ -11,8 +11,8 @@
                 <div class="card">
 
                     <!-- Logo -->
-                    <div class="card-header pt-4 pb-4 text-center bg-primary">
-                        <span><img src="/images/logo.png" alt="" height="18"></span>
+                    <div class="card-header pt-4 text-center bg-primary">
+                        <span><img src="/images/logo_travel_text2.png" alt="" height="75"></span>
                     </div>
 
                     <div class="card-body p-4">
@@ -21,7 +21,7 @@
                             <p>이메일(또는 닉네임)과 패스워드가 정확하지 않습니다.</p>
                             <p>또는 확인되지 않은 이메일을 사용했습니다. 이메일을 확인해 주세요.</p>
                             <p>
-                                확인 후 다시 입력하시거나, <a href="#" th:href="@{/find-passsword}">패스워드 찾기</a>를 이용하세요.
+                                확인 후 다시 입력하시거나, <a href="#" th:href="@{/find-passsword}">비밀번호 없이 로그인하기</a>를 이용하세요.
                             </p>
                         </div>
 
@@ -36,10 +36,10 @@
                             </div>
 
                             <div class="form-group">
-                                <a href="#" th:href="@{/emaillogin}" class="text-muted float-right"><small>Forgot your password? Login without password</small></a>
-                                <label for="password">Password</label>
+                                <a href="#" th:href="@{/emaillogin}" class="text-muted float-right"><small>비밀번호가 기억나지 않으면, 비밀번호 없이 로그인하기</small></a>
+                                <label for="password">비밀번호</label>
                                 <input class="form-control" type="password" id="password" name="password" aria-describedby="passwordHelp" required>
-                                <small class="invalid-feedback">패스워드를 입력하세요.</small>
+                                <small class="invalid-feedback">비밀번호를 입력하세요.</small>
                             </div>
 
                             <div class="form-group mb-0 text-center">
@@ -52,7 +52,7 @@
 
                 <div class="row mt-3">
                     <div class="col-12 text-center">
-                        <p class="text-muted">Don't have an account? <a href="#" th:href="@{/sign-up}" class="text-dark ml-1"><b>Sign Up</b></a></p>
+                        <p class="text-muted">트래블위드에 처음 오신거라면? <a href="#" th:href="@{/sign-up}" class="text-dark ml-1"><b>계정 만들기</b></a></p>
                     </div> <!-- end col -->
                 </div>
                 <!-- end row -->
@@ -65,7 +65,6 @@
 </div>
 <!-- end page -->
 
-<div th:replace="fragments.html :: footer"></div>
 <div th:replace="fragments.html :: js-zip"></div>
 </body>
 </html>
