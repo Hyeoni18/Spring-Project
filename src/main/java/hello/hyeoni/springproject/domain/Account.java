@@ -40,6 +40,14 @@ public class Account {
 
     private LocalDateTime emailCheckTokenGeneratedAt; //이메일 토큰 생성 시간
 
+    // 알림 정보
+    private boolean studyCreatedByEmail; // 스터디가 만들어졌음을 메일로 받을지
+    private boolean studyCreatedByWeb = true; // 스터디가 만들어졌음을 웹으로 받을지
+    private boolean studyEnrollmentResultByEmail; // 스터디 가입신청 결과를 메일로 받을지
+    private boolean studyEnrollmentResultByWeb = true; // 스터디 가입신청 결과를 웹으로 받을지
+    private boolean studyUpdatedByEmail; // 스터디 변경사항을 메일로 받을지
+    private boolean studyUpdatedByWeb = true; // 스터디 변경사항을 웹으로 받을지
+    
 //    @ElementCollection(fetch = FetchType.EAGER) //여러 개의 enum을 가질 수 있으니까. 그리고 기본 role은 LAZY인데 가져올 롤이 적고 매번 가져와야 하니까 EAGER로 변경.
 //    @Enumerated(EnumType.STRING)
 //    private Set<AccountRole> roles;

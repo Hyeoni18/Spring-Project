@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>EMAIL-CHECK</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
 
-</body>
-</html>
+<body data-layout="topnav">
+
+<!-- Begin page -->
+<div class="wrapper">
+
+    <!-- ============================================================== -->
+    <!-- Start Page Content here -->
+    <!-- ============================================================== -->
+
+    <div class="content-page">
+        <div class="content">
+            <div th:replace="fragments.html :: top-nav"></div>
+            <div th:replace="fragments.html :: main-nav"></div>
+
+            <div class="py-5 text-center" th:if="${error != null}">
+                <p class="lead">트래블위드 가입</p>
+                <div  class="alert alert-danger" role="alert" th:text="${error}"></div>
+                <p class="lead" th:text="${email}">your@email.com</p>
+            </div>
+
+            <div class="py-5 text-center" th:if="${error == null}">
+                <p class="lead">트래블위드 가입</p>
+
+                <h2>트래블위드 서비스를 사용하려면 인증 이메일을 확인하세요.</h2>
+
+                <div>
+                    <p class="lead" th:text="${email}">your@email.com</p>
+                    <a class="btn btn-outline-info" th:href="@{/resend-confirm-email}">인증 이메일 다시 보내기</a>
+                </div>
+            </div>
+
+        </div> <!-- content -->
+
+        <footer th:replace="fragments.html :: footer"></footer>
+    </div>
+</div>
