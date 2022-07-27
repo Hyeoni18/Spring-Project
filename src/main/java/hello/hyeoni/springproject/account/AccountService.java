@@ -1,13 +1,12 @@
 package hello.hyeoni.springproject.account;
 
+import hello.hyeoni.springproject.account.form.Profile;
+import hello.hyeoni.springproject.account.form.SignUpForm;
 import hello.hyeoni.springproject.config.AppProperties;
-import hello.hyeoni.springproject.domain.Account;
 import hello.hyeoni.springproject.mail.EmailMessage;
 import hello.hyeoni.springproject.mail.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -95,5 +94,40 @@ public class AccountService implements UserDetailsService {
     public void completeSignUp(Account account) {
         account.completeSignUp();
         login(account);
+    }
+
+    public Account getAccount(String nickname) {
+        Account account = accountRepository.findByNickname(nickname);
+        if (account == null) {
+            throw new IllegalArgumentException(nickname+"에 해당하는 사용자가 없습니다.");
+        }
+        return account;
+    }
+
+    public void updateProfile(Account account, Profile profile) {
+        modelMapper.map(profile, account);
+        accountRepository.save(account);
+    }
+
+    public void sendLoginLink(Account account) {
+        account.generateEmailCheckToken();
+
+        Context context = new Context();
+        context.setVariable("link", "/login-by-email?token="+account.getEmailCheckToken()
+                +"&email="+account.getEmail());
+        context.setVariable("nickname", account.getNickname());
+        context.setVariable("linkName", "이메일로 로그인 하기");
+        context.setVariable("message", "로그인 하려면 아래 링크를 클릭하세요.");
+        context.setVariable("host", appProperties.getHost());
+        String message = templateEngine.process("mail/simple-link", context);
+
+
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(account.getEmail())
+                .subject("스터디올래, 로그인 링크")
+                .message(message)
+                .build();
+
+        emailService.sendEmail(emailMessage);
     }
 }

@@ -1,4 +1,4 @@
-package hello.hyeoni.springproject.domain;
+package hello.hyeoni.springproject.account;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 //@SequenceGenerator(name = "ACCOUNT_SEQ_GENERATOR", sequenceName = "ACCOUNT_SEQ", initialValue = 1, allocationSize = 1)
 @Getter @Setter @Builder
-@Entity
+@Entity @EqualsAndHashCode(of = "id")
 @NoArgsConstructor @AllArgsConstructor
 public class Account {
 
@@ -34,7 +34,7 @@ public class Account {
     private String url;
     private String occupation;
     private String location;
-//    @Lob //String은 varchar로 매핑, 보다 긴 경우 설정해주면 text로 매핑된다.
+    @Lob //String은 varchar로 매핑, 보다 긴 경우 설정해주면 text로 매핑된다.
     @Basic(fetch = FetchType.EAGER) //기본은 LAZY, 프로필 사진은 바로 가져오는게 좋아 EAGER로 설정.
     private String profileImage;
 

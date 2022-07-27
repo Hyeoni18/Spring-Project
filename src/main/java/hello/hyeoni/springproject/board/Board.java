@@ -1,6 +1,6 @@
 package hello.hyeoni.springproject.board;
 
-import hello.hyeoni.springproject.domain.Account;
+import hello.hyeoni.springproject.account.Account;
 import lombok.Getter;
 import lombok.Setter;
 

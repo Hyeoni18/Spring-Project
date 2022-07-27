@@ -1,7 +1,7 @@
 package hello.hyeoni.springproject.main;
 
 import hello.hyeoni.springproject.account.CurrentUser;
-import hello.hyeoni.springproject.domain.Account;
+import hello.hyeoni.springproject.account.Account;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

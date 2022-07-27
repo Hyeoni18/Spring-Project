@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+
+<body data-layout="topnav">
+<div class="wrapper">
+    <div class="content-page">
+        <div class="content">
+            <div th:replace="fragments.html :: top-nav"></div>
+            <div th:replace="fragments.html :: main-nav"></div>
+
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">Profile</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!-- Profile -->
+                        <div class="card bg-primary">
+                            <div class="card-body profile-user-box">
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="media">
+                                            <span class="float-left m-2 mr-4">
+                                                <img th:if="${#strings.isEmpty(account?.profileImage)}" class="img-fluid float-left rounded img-thumbnail" th:data-jdenticon-value="${account.nickname}" width="125" height="125"/>
+                                                <img th:if="${!#strings.isEmpty(account.profileImage)}" class="img-fluid float-left rounded img-thumbnail" th:src="${account.profileImage}" width="125" height="125"/>
+                                            </span>
+                                            <div class="media-body">
+                                                <h4 class="mt-1 mb-1 text-white" th:text="${account.nickname}">Nickname</h4>
+                                                <p th:if="${isOwner || account.emailVerified}">
+                                                    <span style="font-size: 20px;">
+                                                        <i class="fa fa-calendar-o col-1"></i>
+                                                    </span>
+                                                    <p th:if="${isOwner && !account.emailVerified}" class="font-13 text-white-50">
+                                                        <a href="#" class="font-13 text-white-50" th:href="@{'/checkemail?email=' + ${account.email}}">가입을 완료하려면 이메일을 확인하세요.</a>
+                                                    </p>
+
+                                                    <p class="font-13 text-white-50" th:text="${#temporals.format(account.joinedAt, 'yyyy년 M월 가입')}"></p>
+                                                </p>
+                                            </div> <!-- end media-body-->
+                                        </div>
+                                    </div> <!-- end col-->
+
+                                    <div class="col-sm-4">
+                                        <div class="text-center mt-sm-0 mt-3 text-sm-right">
+                                            <div th:if="${isOwner}">
+                                                <a href="#" class="btn btn-primary" th:href="@{/settings/profile}">
+                                                    <i class="mdi mdi-account-settings-variant mr-1"></i> Edit Profile
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div> <!-- end col-->
+                                </div> <!-- end row -->
+
+                            </div> <!-- end card-body/ profile-user-box-->
+                        </div><!--end profile/ card -->
+                    </div> <!-- end col-->
+                </div>
+                <!-- end row -->
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Personal-Information -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title mt-0 mb-3">Information</h4>
+                                <p class="text-muted font-13" th:if="${!#strings.isEmpty(account.bio)}" th:text="${account.bio}">bio</p>
+                                <p class="text-muted font-13" th:if="${#strings.isEmpty(account.bio) && isOwner}"> 소개를 추가하세요. </p>
+                                <hr>
+
+                                <div class="text-left">
+                                    <p class="text-muted" th:if="${!#strings.isEmpty(account.url)}">
+                                        <strong>Link :</strong> <span class="ml-2" th:text="${account.url}"></span>
+                                    </p>
+<!--                                    <p th:if="${!#strings.isEmpty(account.occupation)}">-->
+<!--                                        <strong>Occupation :</strong> <span class="ml-2" th:text="${account.occupation}"></span>-->
+<!--                                    </p>-->
+                                    <p th:if="${!#strings.isEmpty(account.location)}">
+                                        <strong>Location :</strong> <span class="ml-2" th:text="${account.location}"></span>
+                                    </p>
+                                    <p th:if="${isOwner}">
+                                        <strong>Email :</strong> <span class="ml-2" th:text="${account.email}"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Personal-Information -->
+                    </div> <!-- end col-->
+
+                    <div class="col-md-12">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title mb-3">TRAVEL</h4>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-centered mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Stock</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>ASOS Ridley High Waist</td>
+                                            <td>$79.49</td>
+                                            <td><span class="badge badge-primary">82 Pcs</span></td>
+                                            <td>$6,518.18</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Marco Lightweight Shirt</td>
+                                            <td>$128.50</td>
+                                            <td><span class="badge badge-primary">37 Pcs</span></td>
+                                            <td>$4,754.50</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Half Sleeve Shirt</td>
+                                            <td>$39.99</td>
+                                            <td><span class="badge badge-primary">64 Pcs</span></td>
+                                            <td>$2,559.36</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lightweight Jacket</td>
+                                            <td>$20.00</td>
+                                            <td><span class="badge badge-primary">184 Pcs</span></td>
+                                            <td>$3,680.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Marco Shoes</td>
+                                            <td>$28.49</td>
+                                            <td><span class="badge badge-primary">69 Pcs</span></td>
+                                            <td>$1,965.81</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div> <!-- end table responsive-->
+                            </div> <!-- end col-->
+                        </div> <!-- end row-->
+
+                    </div>
+                    <!-- end col -->
+
+                </div>
+                <!-- end row -->
+
+            </div>
+
+
+        </div> <!-- content -->
+        <footer th:replace="fragments.html :: footer"></footer>
+    </div>
+</div>
+<div th:replace="fragments.html :: js-zip"></div>
+</body>
+</html>

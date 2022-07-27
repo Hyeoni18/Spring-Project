@@ -1,4 +1,4 @@
-package hello.hyeoni.springproject.account;
+package hello.hyeoni.springproject.account.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

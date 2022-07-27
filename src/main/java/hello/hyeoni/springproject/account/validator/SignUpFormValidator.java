@@ -1,6 +1,8 @@
-package hello.hyeoni.springproject.account;
+package hello.hyeoni.springproject.account.validator;
 
 
+import hello.hyeoni.springproject.account.AccountRepository;
+import hello.hyeoni.springproject.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

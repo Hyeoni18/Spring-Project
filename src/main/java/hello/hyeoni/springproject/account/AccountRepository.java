@@ -1,6 +1,5 @@
 package hello.hyeoni.springproject.account;
 
-import hello.hyeoni.springproject.domain.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
