@@ -1,5 +1,6 @@
 package hello.hyeoni.springproject.account;
 
+import hello.hyeoni.springproject.account.form.Notifications;
 import hello.hyeoni.springproject.account.form.Profile;
 import hello.hyeoni.springproject.account.form.SignUpForm;
 import hello.hyeoni.springproject.config.AppProperties;
@@ -129,5 +130,15 @@ public class AccountService implements UserDetailsService {
                 .build();
 
         emailService.sendEmail(emailMessage);
+    }
+
+    public void updatePassword(Account account, String newPassword) {
+        account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account); //merge
+    }
+
+    public void updateNotifications(Account account, Notifications notifications) {
+        modelMapper.map(notifications, account);
+        accountRepository.save(account);
     }
 }

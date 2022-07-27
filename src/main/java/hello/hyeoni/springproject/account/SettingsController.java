@@ -1,5 +1,7 @@
 package hello.hyeoni.springproject.account;
 
+import hello.hyeoni.springproject.account.form.Notifications;
+import hello.hyeoni.springproject.account.form.PasswordForm;
 import hello.hyeoni.springproject.account.form.Profile;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -51,5 +53,45 @@ public class SettingsController {
         accountService.updateProfile(account,profile);
         attributes.addFlashAttribute("message","프로필을 수정했습니다.");
         return "redirect:/"+ SETTINGS + PROFILE;
+    }
+
+    @GetMapping(PASSWORD)
+    public String updatePasswordForm(@CurrentUser Account account, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(new PasswordForm());
+        return SETTINGS + PASSWORD;
+    }
+
+    @PostMapping(PASSWORD)
+    public String updatePassword(@CurrentUser Account account, @Valid PasswordForm passwordForm, Errors errors
+            , Model model, RedirectAttributes attributes) {
+        if (errors.hasErrors()) {
+            model.addAttribute(account);
+            return SETTINGS + PASSWORD;
+        }
+
+        accountService.updatePassword(account, passwordForm.getNewPassword());
+        attributes.addFlashAttribute("message", "패스워드를 변경했습니다.");
+        return "redirect:/"+SETTINGS + PASSWORD;
+    }
+
+    @GetMapping(NOTIFICATIONS)
+    public String updateNotificationsForm(@CurrentUser Account account, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(modelMapper.map(account, Notifications.class));
+        return SETTINGS + NOTIFICATIONS;
+    }
+
+    @PostMapping(NOTIFICATIONS)
+    public String updateNotifications(@CurrentUser Account account, @Valid Notifications notifications, Errors errors
+            , Model model, RedirectAttributes attributes) {
+        if(errors.hasErrors()) {
+            model.addAttribute(account);
+            return SETTINGS + NOTIFICATIONS;
+        }
+
+        accountService.updateNotifications(account, notifications);
+        attributes.addFlashAttribute("message","알림 설정을 변경했습니다.");
+        return "redirect:/"+SETTINGS + NOTIFICATIONS;
     }
 }
