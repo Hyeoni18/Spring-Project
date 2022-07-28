@@ -20,7 +20,7 @@ public class AccountController {
     private final SignUpFormValidator signUpFormValidator;
     private final AccountService accountService;
 
-    @InitBinder("signUpForm") // signUpForm 데이터를 받을 때 바인더 설정
+    @InitBinder("signUpForm")
     public void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(signUpFormValidator);
     }
@@ -83,7 +83,6 @@ public class AccountController {
 
     @GetMapping("/profile/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
-        //nickname과 CurrentUser가 일치한다면 편집 가능한 유저.
         Account accountToView = accountService.getAccount(nickname);
         model.addAttribute(accountToView);
         model.addAttribute("isOwner", accountToView.equals(account));

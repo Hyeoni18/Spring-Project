@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authz) -> authz
                         .mvcMatchers("/","/login","/sign-up",
                                 "/check-email-token", "/email-login", "/check-email-login",
-                                "/login-link") // 권한 확인 없이 접근
+                                "/login-link","/board") // 권한 확인 없이 접근
                         .permitAll()
                         .mvcMatchers(HttpMethod.GET, "/profile/*").permitAll() // GET만 허용
                         .anyRequest().authenticated()
@@ -40,7 +40,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .mvcMatchers("/js/**","/css/**","/fonts/**","/images/**")
+                .mvcMatchers("/js/**","/css/**","/fonts/**","/images/**","/node_modules/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 

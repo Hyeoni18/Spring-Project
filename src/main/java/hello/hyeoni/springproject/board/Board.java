@@ -14,9 +14,9 @@ public class Board {
     @Id @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="BOARD_SEQ_GENERATOR")
     private Integer id;
 
-    private String content;
-
     private String title;
+
+    private String content;
 
     @ManyToOne
     private Account author;

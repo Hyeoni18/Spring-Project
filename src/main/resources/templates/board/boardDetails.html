@@ -2,65 +2,45 @@
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”>
 <head th:replace="fragments.html :: head"></head>
 <body data-layout="topnav">
-<!-- Begin page -->
 <div class="wrapper">
-
-    <!-- ============================================================== -->
-    <!-- Start Page Content here -->
-    <!-- ============================================================== -->
-
     <div class="content-page">
         <div class="content">
-
-            <div th:replace="fragments.html :: tob-nav"></div>
+            <div th:replace="fragments.html :: top-nav"></div>
             <div th:replace="fragments.html :: main-nav"></div>
-
             <!-- Start Content-->
             <div class="container-fluid">
-
                 <!-- start page title -->
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box">
-                            <h4 class="page-title">-Board</h4>
+                            <h4 class="page-title">게시판</h4>
                         </div>
                     </div>
                 </div>
                 <!-- end page title -->
-
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title" th:text="${board.title}">Card title</h5>
-                                <p class="card-text" th:text="${board.content}">Card content</p>
+                                <h5 class="card-title" th:text="${board.title}">Title</h5>
+                                <p class="card-text" th:text="${board.content}">Content</p>
                             </div>
                             <div class="card-body">
                                 <a href="/board" class="card-link text-custom">목록</a>
-                                <a th:href="@{/board/edit/{id}(id=${board.id})}" class="card-link text-custom">수정</a>
-                                <a th:href="@{/board/delete/{id}(id=${board.id})}" class="card-link text-custom">삭제</a>
+                                <div th:if="${#strings.equals(board.author, account)}">
+                                    <a th:href="@{/board/edit/{id}(id=${board.id})}" class="card-link text-custom">수정</a>
+                                    <a th:href="@{/board/delete/{id}(id=${board.id})}" class="card-link text-custom">삭제</a>
+                                </div>
                             </div> <!-- end card-body-->
-
                         </div> <!-- end card-->
                     </div> <!-- end col-->
-
                 </div>
                 <!-- end row -->
-
             </div> <!-- container -->
-
         </div> <!-- content -->
-
         <footer class="footer" th:replace="fragments.html :: footer"></footer>
     </div>
-
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
-
-
 </div>
-<!-- END wrapper -->
 <div th:replace="fragments.html :: js-zip"></div>
 </body>
 </html>

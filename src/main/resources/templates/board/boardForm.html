@@ -2,45 +2,36 @@
 <html lang="en" xmlns:th=”http://www.thymeleaf.org”>
 <head th:replace="fragments.html :: head"></head>
 <body data-layout="topnav">
-
-<!-- Begin page -->
 <div class="wrapper">
-
-    <!-- ============================================================== -->
-    <!-- Start Page Content here -->
-    <!-- ============================================================== -->
-
     <div class="content-page">
         <div class="content">
-
-            <div th:replace="fragments.html :: tob-nav"></div>
+            <div th:replace="fragments.html :: top-nav"></div>
             <div th:replace="fragments.html :: main-nav"></div>
-
             <!-- Start Content-->
             <div class="container-fluid">
-
                 <!-- start page title -->
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box">
-                            <h4 class="page-title">-Board</h4>
+                            <h4 class="page-title">게시판</h4>
                         </div>
                     </div>
                 </div>
                 <!-- end page title -->
-
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/board" method="post" th:action="@{/board}">
-                                    <input type="hidden" name="id" th:value="${board?.id}" />
+                                <form action="#" method="post" th:action="@{/board}" th:object="${boardForm}" novalidate>
                                     <div class="form-group">
-                                        <label for="simpleinput">제목</label> <input type="text" id="simpleinput" class="form-control" name="title" th:value="${board?.title}">
+                                        <label for="title">제목</label>
+                                        <input class="form-control" type="text" id="title" th:field="*{title}">
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="simpleinput">내용</label>
-                                        <textarea data-toggle="maxlength" class="form-control" maxlength="1000" rows="10" name="content" th:text="${board?.content}">  </textarea>
+                                        <label for="content">내용</label>
+                                        <textarea class="form-control" id="content" th:field="*{content}" maxlength="1000" rows="10"></textarea>
+                                        <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">content Error</small>
                                     </div>
                                     <div style="text-align: right">
                                         <button type="submit" class="btn btn-outline-primary"> 저장
@@ -48,30 +39,15 @@
                                     </div>
                                 </form>
                             </div>
-
                         </div> <!-- end card-->
                     </div> <!-- end col-->
-
                 </div>
                 <!-- end row -->
-
             </div> <!-- container -->
-
         </div> <!-- content -->
-
         <footer class="footer" th:replace="fragments.html :: footer"></footer>
-
     </div>
-
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
-
-
 </div>
-<!-- END wrapper -->
-
 <div th:replace="fragments.html :: js-zip"></div>
-
 </body>
 </html>
