@@ -69,8 +69,8 @@
             <li class="dropdown notification-list" sec:authorize="isAuthenticated()">
                 <a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="true">
                     <span class="account-user-avatar">
-                        <img th:if="${#strings.isEmpty(account?.profileImage)}" th:data-jdenticon-value="${#authentication.name}" width="24" height="24" class="rounded border bg-light"></img>
-                        <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}" width="24" height="24" alt="user-image" class="rounded"/>
+                        <svg th:if="${#strings.isEmpty(account?.profileImage)}" data-jdenticon-value="user127" th:data-jdenticon-value="${#authentication.name}" width="32" height="32" class="rounded border bg-light" />
+                        <img th:if="${!#strings.isEmpty(account?.profileImage)}" th:src="${account.profileImage}" width="32" height="32" alt="user-image" class="rounded"/>
                     </span>
                     <span sec:authentication="name">Username</span>
                 </a>
@@ -278,6 +278,9 @@
     <!-- demo app -->
     <script src="/js/pages/demo.dashboard.js"></script>
     <!-- end demo js-->
+
+    <!-- jdenticon -->
+    <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
 </div>
 
 <!-- form-validation -->

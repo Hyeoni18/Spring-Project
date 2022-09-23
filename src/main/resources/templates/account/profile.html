@@ -32,7 +32,7 @@
                                     <div class="col-sm-8">
                                         <div class="media">
                                             <span class="float-left m-2 mr-4">
-                                                <img th:if="${#strings.isEmpty(account?.profileImage)}" class="img-fluid float-left rounded img-thumbnail" th:data-jdenticon-value="${account.nickname}" width="125" height="125"/>
+                                                <svg th:if="${#strings.isEmpty(account?.profileImage)}" class="img-fluid float-left rounded img-thumbnail" data-jdenticon-value="user127" th:data-jdenticon-value="${account.nickname}" width="125" height="125"/>
                                                 <img th:if="${!#strings.isEmpty(account.profileImage)}" class="img-fluid float-left rounded img-thumbnail" th:src="${account.profileImage}" width="125" height="125"/>
                                             </span>
                                             <div class="media-body">
@@ -80,8 +80,8 @@
                                 <hr>
 
                                 <div class="text-left">
-                                    <p class="text-muted" th:if="${!#strings.isEmpty(account.url)}">
-                                        <strong>Link :</strong> <span class="ml-2" th:text="${account.url}"></span>
+                                    <p th:if="${!#strings.isEmpty(account.url)}">
+                                        <strong>Link :</strong> <a class="ml-2" th:text="${account.url}" th:href="${account.url}"></a>
                                     </p>
 <!--                                    <p th:if="${!#strings.isEmpty(account.occupation)}">-->
 <!--                                        <strong>Occupation :</strong> <span class="ml-2" th:text="${account.occupation}"></span>-->

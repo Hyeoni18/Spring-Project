@@ -44,7 +44,7 @@ public class AccountController {
 
     @GetMapping("/check-email-token")
     public String checkEmailToken(String token, String email, Model model) {
-        Account account = accountRepository.findByEmail(email);
+        Account account = accountRepository.findByEmail(email); // 유저 확인
         String view = "account/checked-email";
         if (account == null) {
             model.addAttribute("error", "wrong.email");
@@ -78,13 +78,13 @@ public class AccountController {
         }
 
         accountService.sendSignUpConfirmEmail(account);
-        return "redirect:/";
+        return "redirect:/"; // 재전송 하지 않을 땐 redirect 하는게 좋음
     }
 
     @GetMapping("/profile/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
         Account accountToView = accountService.getAccount(nickname);
-        model.addAttribute(accountToView);
+        model.addAttribute(accountToView); // 객체 타입 camelCase를 이름으로 사용
         model.addAttribute("isOwner", accountToView.equals(account));
         return "account/profile";
     }
@@ -110,5 +110,18 @@ public class AccountController {
         accountService.sendLoginLink(account);
         attributes.addFlashAttribute("message", "이메일 인증 메일을 발송했습니다.");
         return "redirect:/email-login";
+    }
+
+    @GetMapping("/login-by-email")
+    public String loginByEmail(String token, String email, Model model) {
+        Account account = accountRepository.findByEmail(email);
+        String view = "account/logged-in-by-email";
+        if(account == null || !account.isValidToken(token)) {
+            model.addAttribute("error", "로그인 할 수 없습니다.");
+            return view;
+        }
+
+        accountService.login(account);
+        return view;
     }
 }

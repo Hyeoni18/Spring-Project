@@ -23,25 +23,26 @@ public class Account {
     @Column(unique = true)
     private String email;
     private String password;
-    private boolean emailVerified;
-    private String emailCheckToken;
-    private LocalDateTime joinedAt;
+    private boolean emailVerified; // 이메일 인증 여부
+    private String emailCheckToken; // 이메일 검증에 사용될 토큰
+    private LocalDateTime joinedAt; // 이메일 인증 완료 시간을 가입 날짜로 저장
 
+    // 기본 정보
     private String bio;
     private String url;
     private String occupation;
     private String location;
-    @Lob
-    @Basic(fetch = FetchType.EAGER)
+    @Lob // String은 varchar(255)로 저장, Lob을 통해 text로 매핑되도록 함
+    @Basic(fetch = FetchType.EAGER) // 기본 fetch는 LAZE, 사진을 바로 가져 오려고 EAGER 설정
     private String profileImage;
-    private LocalDateTime emailCheckTokenGeneratedAt;
+    private LocalDateTime emailCheckTokenGeneratedAt; // 이메일 토큰 생성 시간
 
-    private boolean studyCreatedByEmail;
-    private boolean studyCreatedByWeb = true;
-    private boolean studyEnrollmentResultByEmail;
-    private boolean studyEnrollmentResultByWeb = true;
-    private boolean studyUpdatedByEmail;
-    private boolean studyUpdatedByWeb = true;
+    private boolean studyCreatedByEmail; // 스터디 생성 알림 메일 수신 여부
+    private boolean studyCreatedByWeb = true; // 스터디 생성 알림 웹 수신 여부
+    private boolean studyEnrollmentResultByEmail; // 스터디 가입 결과 메일 수신 여부
+    private boolean studyEnrollmentResultByWeb = true; // 스터디 가입 결과 웹 수신 여부
+    private boolean studyUpdatedByEmail; // 스터디 변경 사항 메일 수신 여부
+    private boolean studyUpdatedByWeb = true; // 스터디 변경 사항 웹 수신 여부
 
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();

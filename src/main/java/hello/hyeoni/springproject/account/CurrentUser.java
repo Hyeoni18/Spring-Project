@@ -7,8 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : account")
+@Retention(RetentionPolicy.RUNTIME) // 런타임까지 유지하고
+@Target(ElementType.PARAMETER) // 파라미터에만 붙일 수 있고
+@AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : account") // SpEL 사용하여 정의
 public @interface CurrentUser {
 }

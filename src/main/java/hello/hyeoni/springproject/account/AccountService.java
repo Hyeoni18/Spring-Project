@@ -9,6 +9,7 @@ import hello.hyeoni.springproject.mail.EmailService;
 import hello.hyeoni.springproject.tag.Tag;
 import hello.hyeoni.springproject.zone.Zone;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -39,10 +41,8 @@ public class AccountService implements UserDetailsService {
     private final AppProperties appProperties;
     private final TemplateEngine templateEngine;
 
-    @Transactional
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
-        newAccount.generateEmailCheckToken();
         sendSignUpConfirmEmail(newAccount);
         return newAccount;
     }
@@ -78,10 +78,10 @@ public class AccountService implements UserDetailsService {
                 new UserAccount(account), account.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER"))
         );
 
-        SecurityContext context = SecurityContextHolder.getContext();
-        context.setAuthentication(token);
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(emailOrNickname);
@@ -129,7 +129,7 @@ public class AccountService implements UserDetailsService {
 
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(account.getEmail())
-                .subject("스터디올래, 로그인 링크")
+                .subject("트래블위드, 로그인 링크")
                 .message(message)
                 .build();
 
