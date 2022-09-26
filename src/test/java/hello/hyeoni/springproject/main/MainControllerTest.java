@@ -36,7 +36,7 @@ public class MainControllerTest {
     @BeforeEach
     void beforeEach() {
         SignUpForm signUpForm = new SignUpForm();
-        signUpForm.setNickname("user");
+        signUpForm.setNickname("usernick");
         signUpForm.setEmail("user@gmail.com");
         signUpForm.setPassword("asdfasdf");
         accountService.processNewAccount(signUpForm);
@@ -57,7 +57,7 @@ public class MainControllerTest {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
-                .andExpect(authenticated().withUsername("user"))
+                .andExpect(authenticated().withUsername("usernick"))
         ;
     }
 
@@ -66,12 +66,12 @@ public class MainControllerTest {
     void login_with_nickname() throws Exception {
 
         mockMvc.perform(post("/login")
-                        .param("username", "user")
+                        .param("username", "usernick")
                         .param("password","asdfasdf")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
-                .andExpect(authenticated().withUsername("user"))
+                .andExpect(authenticated().withUsername("usernick"))
         ;
     }
 
@@ -95,8 +95,7 @@ public class MainControllerTest {
     void logout() throws Exception {
         mockMvc.perform(post("/logout")
                         .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"))
+                .andExpect(status().is2xxSuccessful())
                 .andExpect(unauthenticated());
     }
 
