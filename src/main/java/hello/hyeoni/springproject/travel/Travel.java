@@ -1,6 +1,7 @@
 package hello.hyeoni.springproject.travel;
 
 import hello.hyeoni.springproject.account.Account;
+import hello.hyeoni.springproject.account.UserAccount;
 import hello.hyeoni.springproject.tag.Tag;
 import hello.hyeoni.springproject.zone.Zone;
 import lombok.*;
@@ -10,6 +11,11 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@NamedEntityGraph(name = "Travel.withAll", attributeNodes = {
+        @NamedAttributeNode("tags"),
+        @NamedAttributeNode("zones"),
+        @NamedAttributeNode("managers"),
+        @NamedAttributeNode("members")})
 @Entity
 @Setter @Getter @EqualsAndHashCode
 @Builder @NoArgsConstructor @AllArgsConstructor
@@ -55,4 +61,20 @@ public class Travel {
     public void addManager(Account account) {
         this.managers.add(account);
     }
+
+    // travel/view.html 에서 사용, 가입 가능 여부 조회
+    public boolean isJoinable(UserAccount userAccount) {
+        Account account = userAccount.getAccount(); // 현재 principal 정보
+        return this.isPublished() && this.isRecruiting() // 공개된 동행자 모집, 동행자 모집중
+                && !this.members.contains(account) && !this.managers.contains(account); // 동행자 아님, 매니저 아님
+    }
+    // 동행자 여부 조회
+    public boolean isMember(UserAccount userAccount) {
+        return this.members.contains(userAccount.getAccount());
+    }
+    // 매니저 여부 조회
+    public boolean isManager(UserAccount userAccount) {
+        return this.managers.contains(userAccount.getAccount());
+    }
+
 }

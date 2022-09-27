@@ -12,6 +12,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -23,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 public class TravelController {
 
     private final TravelService travelService;
+    private final TravelRepository travelRepository;
     private final ModelMapper modelMapper;
     private final TravelFormValidator travelFormValidator;
 
@@ -38,7 +40,7 @@ public class TravelController {
         return "travel/form";
     }
 
-    @PostMapping("new-travel")
+    @PostMapping("/new-travel")
     public String newTravelSubmit(@CurrentUser Account account, @Valid TravelForm travelForm, Errors errors) {
         if (errors.hasErrors()) {
             return "travel/form";
@@ -46,5 +48,12 @@ public class TravelController {
 
         Travel newTravel = travelService.createNewTravel(modelMapper.map(travelForm, Travel.class), account);
         return "redirect:/travel/"+ URLEncoder.encode(travelForm.getPath(), StandardCharsets.UTF_8);
+    }
+
+    @GetMapping("/travel/{path}")
+    public String viewTravel(@CurrentUser Account account, @PathVariable String path, Model model) {
+        model.addAttribute(account);
+        model.addAttribute(travelRepository.findByPath(path));
+        return "travel/view";
     }
 }
