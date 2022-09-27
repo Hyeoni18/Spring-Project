@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+
+<body data-layout="topnav">
+<div class="wrapper">
+    <div class="content-page">
+        <div class="content">
+            <div th:replace="fragments.html :: top-nav"></div>
+            <div th:replace="fragments.html :: main-nav"></div>
+
+            <div class="container-fluid">
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">Recruit</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <form class="needs-validation col-sm-10" th:action="@{/new-travel}" th:object="${travelForm}" method="post" novalidate>
+                        <div class="form-group">
+                            <label for="path">동행자 모집 URL</label>
+                            <input id="path" type="text" th:field="*{path}" class="form-control"
+                                   placeholder="예) recruit-path" aria-describedby="pathHelp" required min="2" max="20">
+                            <small id="pathHelp" class="form-text text-muted">
+                                공백 없이 문자, 숫자, 대시(-)와 언더바(_)만 2자 이상 20자 이내로 입력 하세요. 동행자 모집 홈 주소에 사용 됩니다. 예) /travel/<b>recruit-path</b>
+                            </small>
+                            <small class="invalid-feedback">동행자 모집 경로를 입력 하세요.</small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('path')}" th:errors="*{path}">Path Error</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="title">동행자 모집 이름</label>
+                            <input id="title" type="text" th:field="*{title}" class="form-control"
+                                   placeholder="동행자 모집 이름" aria-describedby="titleHelp" required max="20">
+                            <small id="titleHelp" class="form-text text-muted">
+                                동행자 모집 이름을 20자 이내로 입력하세요.
+                            </small>
+                            <small class="invalid-feedback">동행자 모집 이름을 입력하세요.</small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shortDescription">짧은 소개</label>
+                            <textarea id="shortDescription" type="textarea" th:field="*{shortDescription}" class="form-control"
+                                      placeholder="함께할 여행에 대해 짧게 소개해 주세요." aria-describedby="shortDescriptionHelp" required maxlength="100"></textarea>
+                            <small id="shortDescriptionHelp" class="form-text text-muted">
+                                100자 이내로 여행에 대해 짧게 소개해 주세요.
+                            </small>
+                            <small class="invalid-feedback">짧은 소개를 입력 하세요.</small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}">ShortDescription Error</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fullDescription">상세 소개</label>
+                            <textarea id="fullDescription" type="textarea" th:field="*{fullDescription}" class="form-control"
+                                      placeholder="여행에 대해 자세히 설명해 주세요." aria-describedby="fullDescriptionHelp" required></textarea>
+                            <small id="fullDescriptionHelp" class="form-text text-muted">
+                                여행의 목적, 일정, 서로 간의 지켜야 할 규칙 등 동행자 모집에 대해 자세히 적어 주세요.
+                            </small>
+                            <small class="invalid-feedback">상세 소개를 입력 하세요.</small>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('fullDescription')}" th:errors="*{fullDescription}">FullDescription Error</small>
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">동행자 모집 만들기</button>
+                        </div>
+                    </form>
+                </div>
+
+                <footer th:replace="fragments.html :: footer"></footer>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments.html :: js-zip"></div>
+<script th:replace="fragments.html :: form-validation"></script>
+<script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
+<script type="application/javascript">
+        $(function () {
+            $('#fullDescription').summernote({
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+                placeholder: '여행의 목적, 일정, 서로 간의 지켜야 할 규칙 등 동행자 모집에 대해 자세히 적어 주세요.',
+                tabsize: 2,
+                height: 300
+            });
+        });
+    </script>
+</body>
+</html>

@@ -4,19 +4,23 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!-- header -->
 <head th:fragment="head">
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
     <title>Hyeoni's-project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
     <meta content="Coderthemes" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
     <!-- third party css -->
-    <link href="/css/vendor/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
-    <!-- third party css end -->
+    <link rel="stylesheet" href="/css/vendor/jquery-jvectormap-1.2.2.css" type="text/css" />
     <!-- App css -->
-    <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/css/icons.min.css" type="text/css" />
+    <link rel="stylesheet" href="/css/app.min.css" type="text/css" />
+    <!-- summernote css -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" >
+    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
     <!-- tagify -->
     <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
     <style>
@@ -82,7 +86,7 @@
                         <i class="mdi mdi-account-circle"></i>
                         <span>프로필</span>
                     </a>
-                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                    <a href="#" th:href="@{'/new-travel'}" class="dropdown-item notify-item">
                         <i class="mdi mdi-lifebuoy"></i>
                         <span>동행자</span>
                     </a>
@@ -268,6 +272,8 @@
 <div th:fragment="js-zip">
     <!-- App js -->
     <script src="/js/app.min.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- third party js -->
     <script src="/js/vendor/Chart.bundle.min.js"></script>
