@@ -17,4 +17,16 @@ public class TravelService {
         newTravel.addManager(account);
         return newTravel;
     }
+
+    public Travel getTravel(String path) {
+        Travel travel = travelRepository.findByPath(path);
+        checkIfExistingStudy(path, travel);
+        return travel;
+    }
+
+    private void checkIfExistingStudy(String path, Travel travel) {
+        if (travel == null) {
+            throw new IllegalArgumentException(path+"에 해당하는 모집이 없습니다.");
+        }
+    }
 }

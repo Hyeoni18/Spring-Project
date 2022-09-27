@@ -41,8 +41,9 @@ public class TravelController {
     }
 
     @PostMapping("/new-travel")
-    public String newTravelSubmit(@CurrentUser Account account, @Valid TravelForm travelForm, Errors errors) {
+    public String newTravelSubmit(@CurrentUser Account account, @Valid TravelForm travelForm, Errors errors, Model model) {
         if (errors.hasErrors()) {
+            model.addAttribute(account);
             return "travel/form";
         }
 
@@ -55,5 +56,13 @@ public class TravelController {
         model.addAttribute(account);
         model.addAttribute(travelRepository.findByPath(path));
         return "travel/view";
+    }
+
+    @GetMapping("/travel/{path}/members")
+    public String viewTravelMembers(@CurrentUser Account account, @PathVariable String path, Model model) {
+        Travel travel = travelService.getTravel(path);
+        model.addAttribute(account);
+        model.addAttribute(travel);
+        return "travel/members";
     }
 }
