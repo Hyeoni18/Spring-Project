@@ -52,4 +52,7 @@ public class Travel {
     private boolean closed; // Travel 종료 여부
     private boolean useBanner; // 배너 사용 여부
 
+    public void addManager(Account account) {
+        this.managers.add(account);
+    }
 }
