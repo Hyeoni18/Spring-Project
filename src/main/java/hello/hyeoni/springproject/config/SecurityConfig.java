@@ -32,7 +32,7 @@ public class SecurityConfig { // extends WebSecurityConfigurerAdapter를 상속 
                 .authorizeHttpRequests((authz) -> authz
                         .mvcMatchers("/","/login","/sign-up",
                                 "/check-email-token", "/email-login", "/check-email-login",
-                                "/login-link","/login-by-email","/search/study","/board") // 권한 확인 없이 접근
+                                "/login-link","/login-by-email","/search/travel") // 권한 확인 없이 접근
                         .permitAll()
                         .mvcMatchers(HttpMethod.GET, "/profile/*").permitAll() // GET만 허용
                         .anyRequest().authenticated()

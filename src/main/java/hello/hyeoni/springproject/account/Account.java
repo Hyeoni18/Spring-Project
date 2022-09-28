@@ -37,22 +37,18 @@ public class Account {
     private String profileImage;
     private LocalDateTime emailCheckTokenGeneratedAt; // 이메일 토큰 생성 시간
 
-    private boolean studyCreatedByEmail; // 스터디 생성 알림 메일 수신 여부
-    private boolean studyCreatedByWeb = true; // 스터디 생성 알림 웹 수신 여부
-    private boolean studyEnrollmentResultByEmail; // 스터디 가입 결과 메일 수신 여부
-    private boolean studyEnrollmentResultByWeb = true; // 스터디 가입 결과 웹 수신 여부
-    private boolean studyUpdatedByEmail; // 스터디 변경 사항 메일 수신 여부
-    private boolean studyUpdatedByWeb = true; // 스터디 변경 사항 웹 수신 여부
+    private boolean travelCreatedByEmail; // 동행자 모집 생성 알림 메일 수신 여부
+    private boolean travelCreatedByWeb = true; // 동행자 모집 생성 알림 웹 수신 여부
+    private boolean travelEnrollmentResultByEmail; // 동행자 가입 결과 메일 수신 여부
+    private boolean travelEnrollmentResultByWeb = true; // 동행자 가입 결과 웹 수신 여부
+    private boolean travelUpdatedByEmail; // 여행 변경 사항 메일 수신 여부
+    private boolean travelUpdatedByWeb = true; // 여행 변경 사항 웹 수신 여부
 
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();
 
     @ManyToMany
     private Set<Zone> zones = new HashSet<>();
-
-//    @ElementCollection(fetch = FetchType.EAGER) //여러 개의 enum을 가질 수 있으니까. 그리고 기본 role은 LAZY인데 가져올 롤이 적고 매번 가져와야 하니까 EAGER로 변경.
-//    @Enumerated(EnumType.STRING)
-//    private Set<AccountRole> roles;
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();

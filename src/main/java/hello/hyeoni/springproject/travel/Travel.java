@@ -11,11 +11,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@NamedEntityGraph(name = "Travel.withAll", attributeNodes = {
-        @NamedAttributeNode("tags"),
-        @NamedAttributeNode("zones"),
-        @NamedAttributeNode("managers"),
-        @NamedAttributeNode("members")})
 @Entity
 @Setter @Getter @EqualsAndHashCode
 @Builder @NoArgsConstructor @AllArgsConstructor
@@ -53,8 +48,8 @@ public class Travel {
     private LocalDateTime closedDateTime; // Travel 종료한 시간
     private LocalDateTime recruitingUpdateDateTime; // Travel 인원 모집 가능 시간
 
-    private boolean recruiting; // Travel 회원 모집 여부
-    private boolean published; // Travel 공개 여부
+    private boolean recruiting = true; // Travel 회원 모집 여부
+    private boolean published = true; // Travel 공개 여부
     private boolean closed; // Travel 종료 여부
     private boolean useBanner; // 배너 사용 여부
 
