@@ -11,5 +11,5 @@ public interface TravelRepositoryExtension {
 
     Page<Travel> findByKeyword(String keyword, Pageable pageable);
 
-    List<Travel> findByPublished();
+    Page<Travel> findByPublished(Pageable pageable);
 }

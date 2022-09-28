@@ -22,12 +22,12 @@ public class MainController {
     private final TravelRepository travelRepository;
 
     @GetMapping("/")
-    public String home(@CurrentUser Account account, Model model) {
+    public String home(@CurrentUser Account account, Model model, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         if(account != null) {
             model.addAttribute(account);
         }
-        List<Travel> travelList = travelRepository.findByPublished();
-        model.addAttribute(travelList);
+        Page<Travel> travelList = travelRepository.findByPublished(pageable);
+        model.addAttribute("travelList", travelList);
         return "index";
     }
 

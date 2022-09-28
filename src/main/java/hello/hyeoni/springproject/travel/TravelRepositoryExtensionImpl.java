@@ -29,12 +29,14 @@ public class TravelRepositoryExtensionImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public List<Travel> findByPublished() {
+    public Page<Travel> findByPublished(Pageable pageable) {
         QTravel travel = QTravel.travel;
         JPQLQuery<Travel> query = from(travel).where(travel.published.isTrue())
                 .leftJoin(travel.members, QAccount.account).fetchJoin()
                 .leftJoin(travel.managers, QAccount.account).fetchJoin();
-        return query.fetch();
+        JPQLQuery<Travel> pageableQuery = getQuerydsl().applyPagination(pageable, query);
+        QueryResults<Travel> travelQueryResults = pageableQuery.fetchResults();
+        return new PageImpl<>(travelQueryResults.getResults(), pageable, travelQueryResults.getTotal());
     }
 
 }
