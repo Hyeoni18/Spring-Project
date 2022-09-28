@@ -29,4 +29,13 @@ public class TravelService {
             throw new IllegalArgumentException(path+"에 해당하는 모집이 없습니다.");
         }
     }
+
+    public Travel getTravelStatus(String path) {
+        Travel byPath = travelRepository.findByPath(path);
+        return byPath;
+    }
+
+    public void remove(Travel travel) {
+        travelRepository.delete(travel);
+    }
 }

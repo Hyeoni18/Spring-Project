@@ -65,4 +65,12 @@ public class TravelController {
         model.addAttribute(travel);
         return "travel/members";
     }
+
+    @PostMapping("/travel/{path}/remove")
+    public String removeTravel(@CurrentUser Account account, @PathVariable String path) {
+        Travel travel = travelService.getTravelStatus(path);
+        travelService.remove(travel);
+        return "redirect:/";
+    }
+
 }
