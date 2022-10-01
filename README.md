@@ -152,7 +152,7 @@ private Account saveNewAccount(SignUpForm signUpForm) {
 <h3>CURD </h3>
 
 ```java
-//SettingsController.java
+//AccountSettingsController.java
 @PostMapping("/profile")
 public String updateProfile(@CurrentUser Account account, 
                             @Valid Profile profile, Errors errors, Model model, 

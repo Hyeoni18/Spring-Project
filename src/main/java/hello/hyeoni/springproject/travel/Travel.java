@@ -72,4 +72,7 @@ public class Travel {
         return this.managers.contains(userAccount.getAccount());
     }
 
+    public boolean isManagedBy(Account account) {
+        return this.getManagers().contains(account);
+    }
 }

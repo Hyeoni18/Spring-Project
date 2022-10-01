@@ -1,15 +1,10 @@
-package hello.hyeoni.springproject.settings;
+package hello.hyeoni.springproject.account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hello.hyeoni.springproject.account.Account;
-import hello.hyeoni.springproject.account.AccountRepository;
-import hello.hyeoni.springproject.account.AccountService;
-import hello.hyeoni.springproject.account.SettingsController;
 import hello.hyeoni.springproject.account.form.SignUpForm;
 import hello.hyeoni.springproject.tag.Tag;
 import hello.hyeoni.springproject.tag.TagForm;
 import hello.hyeoni.springproject.tag.TagRepository;
-import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class SettingsControllerTest {
+public class AccountSettingsControllerTest {
 
     @Autowired MockMvc mockMvc;
     @Autowired AccountService accountService;
@@ -59,11 +54,11 @@ public class SettingsControllerTest {
     @Test
     void updateProfile() throws Exception {
         String bio = "짧은 소개 수정하는 경우";
-        mockMvc.perform(post("/settings/profile")
+        mockMvc.perform(post("/account/settings/profile")
                         .param("bio",bio)
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/settings/profile"))
+                .andExpect(redirectedUrl("/account/settings/profile"))
                 .andExpect(flash().attributeExists("message"));
 
         Account account = accountRepository.findByNickname("usernick");
@@ -74,8 +69,8 @@ public class SettingsControllerTest {
     @DisplayName("계정의 태그 수정 폼")
     @Test
     void updateTagsForm() throws Exception {
-        mockMvc.perform(get("/settings/tags"))
-                .andExpect(view().name("settings/tags"))
+        mockMvc.perform(get("/account/settings/tags"))
+                .andExpect(view().name("account/settings/tags"))
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attributeExists("whitelist"))
                 .andExpect(model().attributeExists("tags"));
@@ -88,7 +83,7 @@ public class SettingsControllerTest {
         TagForm tagForm = new TagForm();
         tagForm.setTagTitle("newTag");
 
-        mockMvc.perform(post("/settings/tags/add")
+        mockMvc.perform(post("/account/settings/tags/add")
                 .contentType(MediaType.APPLICATION_JSON) // 요청 안에 파라미터가 아닌 본문으로 들어옴, 타입은 JSON 문자열 (TagForm 객체가 JSON 으로 변환한 모습)
                 .content(objectMapper.writeValueAsString(tagForm)) // {"tagTitle" : "newTag"} 이렇게 확인을 해야하는데, 프로퍼티가 많아지면 "\ 이런식으로 작성하기 힘드니 objectMapper를 사용
                 .with(csrf()) // post 요청에 필요

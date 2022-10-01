@@ -33,8 +33,8 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/settings")
-public class SettingsController {
+@RequestMapping("/account/settings")
+public class AccountSettingsController {
 
     private final ModelMapper modelMapper;
     private final AccountService accountService;
@@ -58,7 +58,7 @@ public class SettingsController {
     public String updateProfileForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account, Profile.class));
-        return "settings/profile";
+        return "account/settings/profile";
     }
 
     @PostMapping("/profile")
@@ -66,19 +66,19 @@ public class SettingsController {
             , Model model, RedirectAttributes attributes) {
         if(errors.hasErrors()) {
             model.addAttribute(account);
-            return "settings/profile";
+            return "account/settings/profile";
         }
 
         accountService.updateProfile(account,profile);
         attributes.addFlashAttribute("message","프로필을 수정했습니다.");
-        return "redirect:/settings/profile";
+        return "redirect:/account/settings/profile";
     }
 
     @GetMapping("/password")
     public String updatePasswordForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(new PasswordForm());
-        return "settings/password";
+        return "account/settings/password";
     }
 
     @PostMapping("/password")
@@ -86,19 +86,19 @@ public class SettingsController {
             , Model model, RedirectAttributes attributes) {
         if (errors.hasErrors()) {
             model.addAttribute(account);
-            return "settings/password";
+            return "account/settings/password";
         }
 
         accountService.updatePassword(account, passwordForm.getNewPassword());
         attributes.addFlashAttribute("message", "패스워드를 변경했습니다.");
-        return "redirect:/settings/password";
+        return "redirect:/account/settings/password";
     }
 
     @GetMapping("/notifications")
     public String updateNotificationsForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account, Notifications.class));
-        return "settings/notifications";
+        return "account/settings/notifications";
     }
 
     @PostMapping("/notifications")
@@ -106,19 +106,19 @@ public class SettingsController {
             , Model model, RedirectAttributes attributes) {
         if(errors.hasErrors()) {
             model.addAttribute(account);
-            return "settings/notifications";
+            return "account/settings/notifications";
         }
 
         accountService.updateNotifications(account, notifications);
         attributes.addFlashAttribute("message","알림 설정을 변경했습니다.");
-        return "redirect:/settings/notifications";
+        return "redirect:/account/settings/notifications";
     }
 
     @GetMapping("/account")
     public String updateAccountForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account, NicknameForm.class));
-        return "settings/account";
+        return "account/settings/account";
     }
 
     @PostMapping("/account")
@@ -126,12 +126,12 @@ public class SettingsController {
                                 Model model, RedirectAttributes attributes) {
         if (errors.hasErrors()) {
             model.addAttribute(account);
-            return "settings/account";
+            return "account/settings/account";
         }
 
         accountService.updateNickname(account, nicknameForm.getNickname());
         attributes.addFlashAttribute("message", "닉네임을 수정했습니다.");
-        return "redirect:/settings/account";
+        return "redirect:/account/settings/account";
     }
 
     @GetMapping("/tags")
@@ -143,7 +143,7 @@ public class SettingsController {
 
         List<String> allTags = tagRepository.findAll().stream().map(Tag::getTitle).collect(Collectors.toList());
         model.addAttribute("whitelist", objectMapper.writeValueAsString(allTags));
-        return "settings/tags";
+        return "account/settings/tags";
     }
 
     @PostMapping("/tags/add")
@@ -176,7 +176,7 @@ public class SettingsController {
         List<String> allZones = zoneRepository.findAll().stream().map(Zone::toString).collect(Collectors.toList());
         model.addAttribute("whitelist", objectMapper.writeValueAsString(allZones));
 
-        return "settings/zones";
+        return "account/settings/zones";
     }
 
     @PostMapping("/zones/add")

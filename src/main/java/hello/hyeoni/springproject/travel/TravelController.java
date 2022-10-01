@@ -53,8 +53,9 @@ public class TravelController {
 
     @GetMapping("/travel/{path}")
     public String viewTravel(@CurrentUser Account account, @PathVariable String path, Model model) {
+        Travel travel = travelService.getTravel(path);
         model.addAttribute(account);
-        model.addAttribute(travelRepository.findByPath(path));
+        model.addAttribute(travel);
         return "travel/view";
     }
 
@@ -68,7 +69,7 @@ public class TravelController {
 
     @PostMapping("/travel/{path}/remove")
     public String removeTravel(@CurrentUser Account account, @PathVariable String path) {
-        Travel travel = travelService.getTravelStatus(path);
+        Travel travel = travelService.getTravel(path);
         travelService.remove(travel);
         return "redirect:/";
     }
