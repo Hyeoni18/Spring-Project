@@ -26,7 +26,7 @@ public class TravelSettingsController {
     private final TravelService travelService;
     private final ModelMapper modelMapper;
 
-    @GetMapping
+    @GetMapping("/description")
     public String viewTravelSetting(@CurrentUser Account account, @PathVariable String path, Model model) {
         Travel travel = travelService.getTravelToUpdate(account, path);
         model.addAttribute(account);
@@ -35,7 +35,7 @@ public class TravelSettingsController {
         return "travel/settings/description";
     }
 
-    @PostMapping
+    @PostMapping("/description")
     public String updateTravelInfo(@CurrentUser Account account, @PathVariable String path, @Valid TravelDescriptionForm travelDescriptionForm, Errors errors, RedirectAttributes redirectAttributes, Model model) {
         Travel travel = travelService.getTravelToUpdate(account, path);
 
