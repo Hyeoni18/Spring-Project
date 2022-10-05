@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body data-layout="topnav">
+<div class="wrapper">
+    <div class="content-page">
+        <div class="content">
+            <div th:replace="fragments.html :: top-nav"></div>
+            <div th:replace="fragments.html :: main-nav"></div>
+            <div class="container-fluid">
+                <div th:replace="fragments.html :: travel-info"></div>
+                <div th:replace="fragments.html :: travel-menu (travelMenu='settings')"></div>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-2">
+                        <div th:replace="fragments.html :: travel-settings-menu(currentMenu='zones')"></div>
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <h2 class="col-12">여행 지역</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-info" role="alert">
+                                    여행지를 등록하세요. 해당 지역에 관심 있는 동행자를 모집할 수 있습니다.<br/>
+                                    시스템에 등록된 지역만 선택할 수 있습니다.
+                                </div>
+                                <div id="whitelist" name="whitelist" th:text="${whitelist}" hidden></div>
+                                <input id="zones" type="text" name="zones" th:value="${#strings.listJoin(zones, ',')}"
+                                       class="tagify--outside" aria-describedby="zoneHelp"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- container -->
+        </div> <!-- content -->
+        <footer th:replace="fragments.html :: footer"></footer>
+    </div>
+</div>
+<div th:replace="fragments.html :: js-zip"></div>
+<script th:replace="fragments.html :: ajax-csrf-header"></script>
+<script th:replace="fragments.html :: update-zones(baseUrl='/travel/' + ${travel.path} + '/settings/zones')"></script>
+</body>
+</html>

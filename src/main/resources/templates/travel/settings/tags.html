@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body data-layout="topnav">
+<div class="wrapper">
+    <div class="content-page">
+        <div class="content">
+            <div th:replace="fragments.html :: top-nav"></div>
+            <div th:replace="fragments.html :: main-nav"></div>
+            <div class="container-fluid">
+                <div th:replace="fragments.html :: travel-info"></div>
+                <div th:replace="fragments.html :: travel-menu (travelMenu='settings')"></div>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-2">
+                        <div th:replace="fragments.html :: travel-settings-menu(currentMenu='tags')"></div>
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <h2 class="col-12">여행 주제</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-info" role="alert">
+                                    여행 주제를 입력해 주세요. 해당 주제에 관심 있는 동행자를 모집할 수 있습니다. <br/>
+                                    태그를 입력하고 콤마(,) 또는 엔터를 입력하세요.
+                                </div>
+                                <div id="whitelist" name="whitelist" th:text="${whitelist}" hidden></div>
+                                <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+                                       class="tagify--outside" aria-describedby="tagHelp" placeholder='write tags to add below'/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- container -->
+        </div> <!-- content -->
+        <footer th:replace="fragments.html :: footer"></footer>
+    </div>
+</div>
+<div th:replace="fragments.html :: js-zip"></div>
+<script th:replace="fragments.html :: ajax-csrf-header"></script>
+<script th:replace="fragments.html :: update-tags(baseUrl='/travel/' + ${travel.path} + '/settings/tags')"></script>
+</body>
+</html>

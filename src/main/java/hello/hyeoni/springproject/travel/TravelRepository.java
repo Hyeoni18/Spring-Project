@@ -11,4 +11,10 @@ public interface TravelRepository extends JpaRepository<Travel, Long>, TravelRep
 
     @EntityGraph(attributePaths = {"tags", "zones", "managers", "members"}, type = EntityGraph.EntityGraphType.LOAD) // LOAD는 EntityGraph에 명시한 데이터는 EAGER, 나머지는 기본 전략을 따름
     Travel findByPath(String path);
+
+    @EntityGraph(attributePaths = {"tags", "managers"})
+    Travel findTravelWithTagsByPath(String path);
+
+    @EntityGraph(attributePaths = {"zones", "managers"})
+    Travel findTravelWithZonesByPath(String path);
 }

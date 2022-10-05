@@ -51,7 +51,6 @@ public class Travel {
     private boolean recruiting = true; // Travel 회원 모집 여부
     private boolean published = true; // Travel 공개 여부
     private boolean closed; // Travel 종료 여부
-    private boolean useBanner; // 배너 사용 여부
 
     public void addManager(Account account) {
         this.managers.add(account);

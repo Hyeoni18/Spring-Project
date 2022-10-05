@@ -239,11 +239,6 @@
     </div>
 </div>
 
-<!-- Travel banner -->
-<div th:fragment="travel-banner" th:if="${travel.useBanner}" class="row" id="travel-logo">
-    <img th:src="${travel.image}"/>
-</div>
-
 <!-- Travel info -->
 <div th:fragment="travel-info">
     <div class="row pt-4 text-left justify-content-center bg-light">
@@ -269,16 +264,16 @@
     <div class="row justify-content-center bg-light">
         <div class="col-10">
             <p>
-                            <span th:each="tag: ${travel.tags}" class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
-                                <a th:href="@{'/search/tag/' + ${tag.title}}" class="text-decoration-none text-white">
-                                    <i class="fa fa-tag"></i> <span th:text="${tag.title}">Tag</span>
-                                </a>
-                            </span>
+                <span th:each="tag: ${travel.tags}" class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
+                    <a th:href="@{'/search/tag/' + ${tag.title}}" class="text-decoration-none text-white">
+                        <i class="mdi mdi-tag-outline"></i> <span th:text="${tag.title}">Tag</span>
+                    </a>
+                </span>
                 <span th:each="zone: ${travel.zones}" class="font-weight-light text-monospace badge badge-primary mr-3">
-                                <a th:href="@{'/search/zone/' + ${zone.id}}" class="text-decoration-none text-white">
-                                    <i class="fa fa-globe"></i> <span th:text="${zone.localNameOfCity}">City</span>
-                                </a>
-                            </span>
+                    <a th:href="@{'/search/zone/' + ${zone.id}}" class="text-decoration-none text-white">
+                        <i class="mdi mdi-map-marker-outline"></i> <span th:text="${zone.localNameOfCity}">City</span>
+                    </a>
+                </span>
             </p>
         </div>
     </div>
@@ -398,8 +393,6 @@
 <div th:fragment="travel-settings-menu (currentMenu)" class="list-group">
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'description'}? active"
        href="#" th:href="@{'/travel/' + ${travel.path} + '/settings/description'}">소개</a>
-    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'image'}? active"
-       href="#" th:href="@{'/travel/' + ${travel.path} + '/settings/banner'}">배너 이미지</a>
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'tags'}? active"
        href="#" th:href="@{'/travel/' + ${travel.path} + '/settings/tags'}">여행 주제</a>
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'zones'}? active"
