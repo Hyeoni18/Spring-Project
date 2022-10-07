@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body data-layout="topnav">
+<div class="wrapper">
+    <div class="content-page">
+        <div class="content">
+            <div th:replace="fragments.html :: top-nav"></div>
+            <div th:replace="fragments.html :: main-nav"></div>
+            <div class="container-fluid">
+                <div th:replace="fragments.html :: travel-info"></div>
+                <div th:replace="fragments.html :: travel-menu (travelMenu='settings')"></div>
+                <div class="row mt-3 justify-content-center">
+                    <div class="col-2">
+                        <div th:replace="fragments.html :: travel-settings-menu(currentMenu='travel')"></div>
+                    </div>
+                    <div class="col-8">
+                        <div th:replace="fragments.html :: message"></div>
+
+                        <div class="row" th:if="${!travel.published && !travel.closed}">
+                            <h5 class="col-sm-12">동행자 모집 공개</h5>
+                            <form class="col-sm-12" action="#" th:action="@{'/travel/' + ${travel.getPath()} + '/settings/travel/publish'}" method="post" novalidate>
+                                <div class="alert alert-info" role="alert">
+                                    동행자 모집을 다른 사용자에게 공개할 준비가 되었다면 버튼을 클릭하세요.<br/>
+                                    여행 목적 소개, 여행 테마 및 활동 지역을 등록했는지 확인하세요.<br/>
+                                    모집을 공개하면 여행 주제와 지역에 관심있는 다른 사용자에게 알림을 전송합니다.
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">동행자 모집 공개</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr th:if="${!travel.closed && !travel.recruiting && travel.published}"/>
+                        <div class="row" th:if="${!travel.closed && !travel.recruiting && travel.published}">
+                            <h5 class="col-sm-12">동행자 모집</h5>
+                            <form class="col-sm-12" action="#" th:action="@{'/travel/' + ${travel.getPath()} + '/settings/recruit/start'}" method="post" novalidate>
+                                <div class="alert alert-info" role="alert">
+                                    동행자를 모집합니다.<br/>
+                                    충분한 동행자를 모집했다면 모집을 멈출 수 있습니다.<br/>
+                                    동행자 모집 정보는 1시간에 한 번만 바꿀 수 있습니다.
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">동행자 모집 시작</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr th:if="${!travel.closed && travel.recruiting && travel.published}"/>
+                        <div class="row" th:if="${!travel.closed && travel.recruiting && travel.published}">
+                            <h5 class="col-sm-12">동행자 모집</h5>
+                            <form class="col-sm-12" action="#" th:action="@{'/travel/' + ${travel.getPath()} + '/settings/recruit/stop'}" method="post" novalidate>
+                                <div class="alert alert-primary" role="alert">
+                                    동행자 모집을 중답합니다.<br/>
+                                    동행자가 더 필요할 때 다시 모집을 시작할 수 있습니다.<br/>
+                                    동행자 모집 정보는 1시간에 한번만 바꿀 수 있습니다.
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">동행자 모집 중단</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr th:if="${!travel.closed}"/>
+                        <div class="row" th:if="${!travel.closed}">
+                            <h5 class="col-sm-12">동행자 모집 경로</h5>
+                            <form class="col-sm-12 needs-validation" action="#" th:action="@{'/travel/' + ${travel.path} + '/settings/travel/path'}" method="post" novalidate>
+                                <div class="alert alert-warning" role="alert">
+                                    동행자 모집 경로를 수정하면 이전에 사용하던 경로로 접근할 수 없으니 주의하세요. <br/>
+                                </div>
+                                <div class="form-group">
+                                    <input id="path" type="text" name="newPath" th:value="${travel.path}" class="form-control"
+                                           placeholder="예) travel-path" aria-describedby="pathHelp" required>
+                                    <small id="pathHelp" class="form-text text-muted">
+                                        공백없이 문자, 숫자, 대시(-)와 언더바(_)만 3자 이상 20자 이내로 입력하세요. 동행자 모집 경로에 사용합니다. 예) /travel/<b>travel-path</b>
+                                    </small>
+                                    <small class="invalid-feedback">동행자 모집 경로를 입력하세요.</small>
+                                    <small class="form-text text-danger" th:if="${travelPathError}" th:text="${travelPathError}">Path Error</small>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-outline-warning" type="submit" aria-describedby="submitHelp">경로 수정</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr th:if="${!travel.closed}"/>
+                        <div class="row" th:if="${!travel.closed}">
+                            <h5 class="col-12">동행자 모집 이름</h5>
+                            <form class="needs-validation col-12" action="#" th:action="@{'/travel/' + ${travel.path} + '/settings/travel/title'}" method="post" novalidate>
+                                <div class="alert alert-warning" role="alert">
+                                    동행자 모집 이름을 수정합니다.<br/>
+                                </div>
+                                <div class="form-group">
+                                    <input id="title" type="text" name="newTitle" th:value="${travel.title}" class="form-control"
+                                           placeholder="동행자 모집 이름" aria-describedby="titleHelp" required maxlength="50">
+                                    <small id="titleHelp" class="form-text text-muted">
+                                        동행자 모집 이름을 50자 이내로 입력하세요.
+                                    </small>
+                                    <small class="invalid-feedback">동행자 모집 이름을 입력하세요.</small>
+                                    <small class="form-text text-danger" th:if="${travelTitleError}" th:text="${travelTitleError}">Title Error</small>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-outline-warning" type="submit" aria-describedby="submitHelp">동행자 모집 이름 수정</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <hr>
+                        <div class="row" th:if="${travel.published && !travel.closed}">
+                            <h5 class="col-sm-12">동행자 모집 종료</h5>
+                            <form class="col-sm-12" action="#" th:action="@{'/travel/' + ${travel.getPath()} + '/settings/travel/close'}" method="post" novalidate>
+                                <div class="alert alert-warning" role="alert">
+                                    여행을 마쳤다면 모집을 종료하세요.<br/>
+                                    여행을 종료하면 더이상 동행자를 모집하거나 모임을 만들 수 없으며, 모집 경로와 이름을 수정할 수 없습니다.<br/>
+                                    동행자 모임과 참여한 팀원의 기록은 그대로 보관합니다.
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-outline-warning" type="submit" aria-describedby="submitHelp">동행자 모집 종료</button>
+                                </div>
+                            </form>
+                            <div th:if="${travel.closed}" class="col-sm-12 alert alert-info">
+                                이 모집은 <span class="date-time" th:text="${travel.closedDateTime}"></span>에 종료됐습니다.<br/>
+                                다시 모집을 진행하고 싶다면 새로운 동행자 모집을 만드세요.<br/>
+                            </div>
+                        </div>
+
+                        <hr/>
+                        <div class="row" th:if="${travel.isRemovable()}">
+                            <h5 class="col-sm-12 text-danger">동행자 모집 삭제</h5>
+                            <form class="col-sm-12" action="#" th:action="@{'/travel/' + ${travel.getPath()} + '/settings/travel/remove'}" method="post" novalidate>
+                                <div class="alert alert-danger" role="alert">
+                                    모집을 삭제하면 동행자 관련 모든 기록을 삭제하며 복구할 수 없습니다. <br/>
+                                    <b>다음에 해당하는 동행자 모집은 자동으로 삭제 됩니다.</b>
+                                    <ul>
+                                        <li>만든지 1주일이 지난 비공개 동행자 모집</li>
+                                        <li>모집 공개 이후, 한달 동안 모임을 만들지 않은 동행자 모집</li>
+                                        <li>모집 공개 이후, 모임을 만들지 않고 종료한 동행자 모집</li>
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-outline-danger" type="submit" aria-describedby="submitHelp">동행자 모집 삭제</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row" th:if="${!travel.isRemovable()}">
+                            <h5 class="col-sm-12 text-danger">동행자 모집 삭제</h5>
+                            <form class="col-sm-12" action="#" th:action="@{'/travel/' + ${travel.getPath()} + '/settings/travel/remove'}" method="post" novalidate>
+                                <div class="alert alert-danger" role="alert">
+                                    동행자 모집을 공개 하고 모임을 했던 동행자 모집은 삭제할 수 없습니다.
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-outline-danger" type="submit" aria-describedby="submitHelp" disabled>동행자 모집 삭제</button>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div> <!-- container -->
+        </div> <!-- content -->
+        <footer th:replace="fragments.html :: footer"></footer>
+    </div>
+</div>
+<div th:replace="fragments.html :: js-zip"></div>
+</body>
+</html>

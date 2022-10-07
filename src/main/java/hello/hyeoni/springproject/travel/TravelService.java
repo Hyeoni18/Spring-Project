@@ -10,7 +10,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import static hello.hyeoni.springproject.travel.form.TravelForm.VALID_PATH_PATTERN;
 
 @Service
 @Transactional
@@ -39,7 +39,11 @@ public class TravelService {
     }
 
     public void remove(Travel travel) {
-        travelRepository.delete(travel);
+        if(travel.isRemovable()) {
+            travelRepository.delete(travel);
+        } else {
+            throw new IllegalArgumentException("모집을 삭제할 수 없습니다.");
+        }
     }
 
     public Travel getTravelToUpdate(Account account, String path) {
@@ -88,5 +92,56 @@ public class TravelService {
 
     public void removeZone(Travel travel, Zone zone) {
         travel.getZones().remove(zone);
+    }
+
+    public Travel getTravelToUpdateStatus(Account account, String path) {
+        Travel travel = travelRepository.findTravelWithManagersByPath(path);
+        checkIfExistingTravel(path, travel);
+        checkIfManager(account, travel);
+        return travel;
+    }
+
+    public void publish(Travel travel) {
+        travel.publish();
+    }
+
+    public void close(Travel travel) {
+        travel.close();
+    }
+
+    public boolean isValidPath(String newPath) {
+        if(!newPath.matches(VALID_PATH_PATTERN)) {
+           return false;
+        }
+        return !travelRepository.existsByPath(newPath);
+    }
+
+    public void updateTravelPath(Travel travel, String newPath) {
+        travel.setPath(newPath);
+    }
+
+
+    public boolean isValidTitle(String newTitle) {
+        return newTitle.length() <= 50;
+    }
+
+    public void updateTravelTitle(Travel travel, String newTitle) {
+        travel.setTitle(newTitle);
+    }
+
+    public void startRecruit(Travel travel) {
+        travel.startRecruit();
+    }
+
+    public void stopRecruit(Travel travel) {
+        travel.stopRecruit();
+    }
+
+    public void addMember(Travel travel, Account account) {
+        travel.addMember(account);
+    }
+
+    public void removeMember(Travel travel, Account account) {
+        travel.removeMember(account);
     }
 }

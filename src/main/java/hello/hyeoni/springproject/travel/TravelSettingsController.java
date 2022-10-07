@@ -63,11 +63,7 @@ public class TravelSettingsController {
 
         travelService.updateTravelDescription(travel, travelDescriptionForm);
         redirectAttributes.addFlashAttribute("message", "모집 소개를 수정했습니다.");
-        return "redirect:/travel/"+getPath(path)+"/settings/description";
-    }
-
-    private String getPath(String path) {
-        return URLEncoder.encode(path, StandardCharsets.UTF_8);
+        return "redirect:/travel/"+travel.getEncodedPath()+"/settings/description";
     }
 
     @GetMapping("/tags")
@@ -143,4 +139,86 @@ public class TravelSettingsController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/travel")
+    public String travelForm(@CurrentUser Account account, @PathVariable String path, Model model) {
+        Travel travel = travelService.getTravelToUpdateStatus(account, path);
+        model.addAttribute(account);
+        model.addAttribute(travel);
+        return "travel/settings/travel";
+    }
+
+    @PostMapping("/travel/publish")
+    public String publishTravel(@CurrentUser Account account, @PathVariable String path, RedirectAttributes attributes) {
+        Travel travel = travelService.getTravelToUpdateStatus(account, path);
+        travelService.publish(travel);
+        attributes.addFlashAttribute("message","동행자 모집을 공개했습니다.");
+        return "redirect:/travel/"+travel.getEncodedPath()+"/settings/travel";
+    }
+
+    @PostMapping("/travel/close")
+    public String closeTravel(@CurrentUser Account account, @PathVariable String path, RedirectAttributes attributes) {
+        Travel travel = travelService.getTravelToUpdateStatus(account, path);
+        travelService.close(travel);
+        attributes.addFlashAttribute("message","동행자 모집을 종료했습니다.");
+        return "redirect:/travel/"+travel.getEncodedPath()+"/settings/travel";
+    }
+
+    @PostMapping("/travel/path")
+    public String updateTravelPath(@CurrentUser Account account, @PathVariable String path, @RequestParam String newPath, Model model, RedirectAttributes attributes) {
+        Travel travel = travelService.getTravelToUpdateStatus(account, path);
+        if(!travelService.isValidPath(newPath)) {
+            model.addAttribute(account);
+            model.addAttribute(travel);
+            model.addAttribute("travelPathError", "해당 경로를 사용할 수 없습니다.");
+            return "travel/settings/travel";
+        }
+        travelService.updateTravelPath(travel, newPath);
+        attributes.addFlashAttribute("message", "경로를 수정했습니다.");
+        return "redirect:/travel/"+travel.getEncodedPath()+"/settings/travel";
+    }
+
+    @PostMapping("/travel/title")
+    public String updateTravelTitle(@CurrentUser Account account, @PathVariable String path, @RequestParam String newTitle, Model model, RedirectAttributes attributes) {
+        Travel travel = travelService.getTravelToUpdateStatus(account, path);
+        if(!travelService.isValidTitle(newTitle)) {
+            model.addAttribute(account);
+            model.addAttribute(travel);
+            model.addAttribute("travelTitleError", "해당 이름을 사용할 수 없습니다.");
+            return "travel/settings/travel";
+        }
+        travelService.updateTravelTitle(travel, newTitle);
+        attributes.addFlashAttribute("message","이름을 수정했습니다.");
+        return "redirect:/travel/"+travel.getEncodedPath()+"/settings/travel";
+    }
+
+    @PostMapping("/travel/remove")
+    public String removeTravel(@CurrentUser Account account, @PathVariable String path) {
+        Travel travel = travelService.getTravelToUpdateStatus(account, path);
+        travelService.remove(travel);
+        return "redirect:/";
+    }
+
+    @PostMapping("/recruit/start")
+    public String startTravelRecruit(@CurrentUser Account account, @PathVariable String path, Model model, RedirectAttributes attributes) {
+        Travel travel = travelService.getTravelToUpdateStatus(account, path);
+        if(!travel.canUpdateRecruiting()) {
+            attributes.addFlashAttribute("message", "1시간 안에 인원 모집 변경을 여러번 할 수 없습니다.");
+            return "redirect:/travel/"+travel.getEncodedPath()+"/settings/travel";
+        }
+        travelService.startRecruit(travel);
+        attributes.addFlashAttribute("message", "동행자 모집을 시작합니다.");
+        return "redirect:/travel/"+travel.getEncodedPath()+"/settings/travel";
+    }
+
+    @PostMapping("/recruit/stop")
+    public String stopTravelRecruit(@CurrentUser Account account, @PathVariable String path, Model model, RedirectAttributes attributes) {
+        Travel travel = travelService.getTravelToUpdateStatus(account, path);
+        if(!travel.canUpdateRecruiting()) {
+            attributes.addFlashAttribute("message", "1시간 안에 인원 모집 변경을 여러번 할 수 없습니다.");
+            return "redirect:/travel/"+travel.getEncodedPath()+"/settings/travel";
+        }
+        travelService.stopRecruit(travel);
+        attributes.addFlashAttribute("message","동행자 모집을 종료합니다.");
+        return "redirect:/travel/"+travel.getEncodedPath()+"/settings/travel";
+    }
 }

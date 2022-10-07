@@ -249,11 +249,49 @@
         </div>
 
         <div class="col-4 text-right justify-content-end">
-            <form th:action="@{'/travel/' + ${travel.path} + '/remove'}" method="post">
-            <span sec:authorize="isAuthenticated()" th:if="${travel.isManager(#authentication.principal)}" class="btn-group" role="group">
-                <button class="btn btn-outline-danger" type="submit" aria-describedby="submitHelp">모집글 삭제</button>
+            <span th:if="${!travel.published}"
+                  class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom"
+                  title="동행자 모집 공개 준비중">
+                <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>DRAFT</button>
             </span>
-            </form>
+            <span th:if="${travel.closed}"
+                  class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="동행자 모집 종료함">
+                    <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>CLOSED</button>
+                </span>
+            <span th:if="${!travel.recruiting}"
+                  class="d-inline-block ml-1" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="동행자 모집중 아님">
+                    <button class="btn btn-primary btn-sm" style="pointer-events: none;" type="button" disabled>OFF</button>
+                </span>
+            <span sec:authorize="isAuthenticated()" th:if="${travel.isJoinable(#authentication.principal)}"
+              class="btn-group" role="group" aria-label="Basic example">
+                <form th:action="@{'/travel/' + ${travel.path} + '/join'}" method="post">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">동행자 가입</button>
+                        </div>
+                        <a class="btn btn-outline-primary" th:href="@{'/travel/' + ${travel.path} + '/members'}"
+                           th:text="${travel.members.size()+travel.managers.size()}">1</a>
+                    </div>
+                </form>
+            </span>
+            <span sec:authorize="isAuthenticated()"
+              th:if="${!travel.closed && travel.isMember(#authentication.principal)}" class="btn-group" role="group">
+                <form th:action="@{'/travel/' + ${travel.path} + '/leave'}" method="post">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-outline-warning" type="submit" aria-describedby="submitHelp">동행자 탈퇴</button>
+                        </div>
+                        <a class="btn btn-outline-primary" th:href="@{'/travel/' + ${travel.path} + '/members'}"
+                           th:text="${travel.members.size()+travel.managers.size()}">1</a>
+                    </div>
+                </form>
+            </span>
+            <span sec:authorize="isAuthenticated()"
+              th:if="${travel.published && !travel.closed && travel.isManager(#authentication.principal)}">
+                <a class="btn btn-outline-primary" th:href="@{'/travel/' + ${travel.path} + '/new-event'}">
+                    <i class="fa fa-plus"></i> 모임 만들기
+                </a>
+            </span>
         </div>
     </div>
     <div class="row justify-content-center bg-light">

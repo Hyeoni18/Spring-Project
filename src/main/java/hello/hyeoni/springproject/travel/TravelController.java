@@ -48,7 +48,7 @@ public class TravelController {
         }
 
         Travel newTravel = travelService.createNewTravel(modelMapper.map(travelForm, Travel.class), account);
-        return "redirect:/travel/"+ URLEncoder.encode(travelForm.getPath(), StandardCharsets.UTF_8);
+        return "redirect:/travel/"+ newTravel.getEncodedPath();
     }
 
     @GetMapping("/travel/{path}")
@@ -67,11 +67,17 @@ public class TravelController {
         return "travel/members";
     }
 
-    @PostMapping("/travel/{path}/remove")
-    public String removeTravel(@CurrentUser Account account, @PathVariable String path) {
-        Travel travel = travelService.getTravel(path);
-        travelService.remove(travel);
-        return "redirect:/";
+    @PostMapping("/travel/{path}/join")
+    public String joinTravel(@CurrentUser Account account, @PathVariable String path, Model model) {
+        Travel travel = travelRepository.findTravelWithMembersByPath(path);
+        travelService.addMember(travel, account);
+        return "redirect:/travel/"+travel.getEncodedPath()+"/members";
     }
 
+    @PostMapping("/travel/{path}/leave")
+    public String leaveTravel(@CurrentUser Account account, @PathVariable String path, Model model) {
+        Travel travel = travelRepository.findTravelWithMembersByPath(path);
+        travelService.removeMember(travel, account);
+        return "redirect:/travel/"+travel.getEncodedPath()+"/members";
+    }
 }
