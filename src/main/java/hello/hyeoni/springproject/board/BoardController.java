@@ -48,10 +48,39 @@ public class BoardController {
     }
 
     @GetMapping("/travel/{path}/board/{id}")
-    public String getTravelBoard(@CurrentUser Account account, @PathVariable String path, @PathVariable("id")Board board, Model model) {
+    public String getTravelBoard(@CurrentUser Account account, @PathVariable String path, @PathVariable("id") Board board, Model model) {
         model.addAttribute(account);
         model.addAttribute(board);
         model.addAttribute(travelService.getTravel(path));
         return "board/view";
+    }
+
+    @GetMapping("/travel/{path}/board/{id}/edit")
+    public String updateTravelBoardForm(@CurrentUser Account account, @PathVariable String path, @PathVariable("id") Board board, Model model) {
+        Travel travel = travelService.getTravel(path);
+        model.addAttribute(account);
+        model.addAttribute(travel);
+        model.addAttribute(board);
+        model.addAttribute(modelMapper.map(board, BoardForm.class));
+        return "board/update-form";
+    }
+
+    @PostMapping("/board/{path}/{id}/edit")
+    public String editBoardSubmit(@CurrentUser Account account, @PathVariable String path, @PathVariable("id") Board board, @Valid BoardForm boardForm, Errors errors, Model model) {
+        Travel travel = travelService.getTravel(path);
+        if(errors.hasErrors()) {
+            model.addAttribute(account);
+            model.addAttribute(travel);
+            return "board/form";
+        }
+
+        boardService.updateBoard(board, boardForm);
+        return "redirect:/travel/"+travel.getEncodedPath()+"/board/"+board.getId();
+    }
+
+    @GetMapping("/travel/{path}/board/{id}/delete")
+    public String deleteTravelBoard(@PathVariable String path, @PathVariable("id") Board board) {
+        boardRepository.delete(board);
+        return "redirect:/travel/"+path+"/announcement";
     }
 }
