@@ -2,6 +2,7 @@ package hello.hyeoni.springproject.travel;
 
 import hello.hyeoni.springproject.account.Account;
 import hello.hyeoni.springproject.account.UserAccount;
+import hello.hyeoni.springproject.board.Board;
 import hello.hyeoni.springproject.tag.Tag;
 import hello.hyeoni.springproject.zone.Zone;
 import lombok.*;
@@ -11,6 +12,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -45,6 +47,9 @@ public class Travel {
 
     @ManyToMany
     private Set<Zone> zones = new HashSet<>();
+
+    @OneToMany(mappedBy = "travel")
+    private List<Board> boards;
 
     private LocalDateTime publishedDateTime; // Travel 공개한 시간
     private LocalDateTime closedDateTime; // Travel 종료한 시간

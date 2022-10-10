@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html :: head"></head>
+<body data-layout="topnav">
+<div class="wrapper">
+    <div class="content-page">
+        <div class="content">
+            <div th:replace="fragments.html :: top-nav"></div>
+            <div th:replace="fragments.html :: main-nav"></div>
+            <div class="container-fluid">
+                <div th:replace="fragments.html :: travel-info"></div>
+                <div th:replace="fragments.html :: travel-menu (travelMenu='announcement')"></div>
+
+                <div class="row px-3 justify-content-center">
+                    <div class="card-body">
+                            <h4 class="header-title">게시판</h4>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p class="text-muted font-14 mb-4">
+                                    자유롭게 <code>여행에 대한</code> 의견을 나누세요.
+                                </p>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="text-center mt-sm-0 mt-3 text-sm-right">
+                                    <a th:href="@{'/travel/'+${travel.path}+'/board/form'}" class="btn btn-light">
+                                        <i class="mdi mdi-plus-circle-outline"></i> 글쓰기
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive-sm">
+                            <table class="table table-hover table-centered mb-0">
+                                <thead>
+                                <tr>
+                                    <th>제목</th>
+                                    <th>글쓴이</th>
+                                    <th>날짜</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:if="${boards.size() > 0}" th:each="board: ${boards}">
+                                    <td><span th:text="${board.title}">제목</span>  <span th:if="${board.isManager()}" class="badge badge-primary">관리자</span></td>
+                                    <td><span th:text="${board.getNickname}">글쓴이</span></td>
+                                    <td><span th:text="${board.createdDateTime}">날짜</span></td>
+                                    <td class="table-action">
+                                        <a href="javascript: void(0);" class="action-icon" th:if="${board.isEditable(#authentication.principal)}"> <i class="mdi mdi-pencil"></i></a>
+                                        <a href="javascript: void(0);" class="action-icon" th:if="${board.isEditable(#authentication.principal)}"> <i class="mdi mdi-delete"></i></a>
+                                    </td>
+                                </tr>
+                                <tr th:if="${boards.size() == 0}">
+                                    <td colspan="4">등록된 글이 없습니다.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- end table-responsive-->
+
+                    </div>
+                </div>
+
+            </div> <!-- container -->
+        </div> <!-- content -->
+        <footer th:replace="fragments.html :: footer"></footer>
+    </div>
+</div>
+<div th:replace="fragments.html :: js-zip"></div>
+</body>
+</html>

@@ -286,12 +286,6 @@
                     </div>
                 </form>
             </span>
-            <span sec:authorize="isAuthenticated()"
-              th:if="${travel.published && !travel.closed && travel.isManager(#authentication.principal)}">
-                <a class="btn btn-outline-primary" th:href="@{'/travel/' + ${travel.path} + '/new-event'}">
-                    <i class="fa fa-plus"></i> 모임 만들기
-                </a>
-            </span>
         </div>
     </div>
     <div class="row justify-content-center bg-light">
@@ -329,8 +323,8 @@
                     <i class="mdi mdi-human-child"></i> 구성원 </a>
             </li>
            <li class="nav-item">
-               <a class="nav-link" th:classappend="${travelMenu == 'events'}? active" href="#" th:href="@{'/travel/' + ${travel.path} + '/events'}">
-                   <i class="mdi mdi-calendar-text"></i> 모임 </a>
+               <a class="nav-link" th:classappend="${travelMenu == 'announcement'}? active" href="#" th:href="@{'/travel/' + ${travel.path} + '/announcement'}">
+                   <i class="mdi mdi-calendar-text"></i> 게시판 </a>
            </li>
             <li class="nav-item">
                 <a sec:authorize="isAuthenticated()" th:if="${travel.isManager(#authentication.principal)}"

@@ -79,9 +79,8 @@
                                             <a class="page-link" th:href="@{'/?sort=id,desc&page=' + ${i}}" th:text="${i + 1}"></a>
                                         </li>
 
-                                        <li class="page-item active"
-                                            th:each="i : ${#numbers.sequence(0, travelList.getTotalPages())}" th:if="${travelList.getTotalPages() == 0}">
-                                            <a class="page-link" th:href="@{'/?sort=id,desc&page=' + ${i}}" th:text="${i + 1}"></a>
+                                        <li class="page-item active" th:if="${travelList.getTotalPages() == 0}">
+                                            <a class="page-link" th:href="@{'/?sort=id,desc&page=0'}" th:text="1"></a>
                                         </li>
 
                                         <li class="page-item" th:classappend="${!travelList.hasNext()}? disabled">
