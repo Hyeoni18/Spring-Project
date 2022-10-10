@@ -1,11 +1,13 @@
 package hello.hyeoni.springproject.travel;
 
 import hello.hyeoni.springproject.account.Account;
+import hello.hyeoni.springproject.notification.TravelCreatedEvent;
 import hello.hyeoni.springproject.tag.Tag;
 import hello.hyeoni.springproject.travel.form.TravelDescriptionForm;
 import hello.hyeoni.springproject.zone.Zone;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ public class TravelService {
 
     private final TravelRepository travelRepository;
     private final ModelMapper modelMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Travel createNewTravel(Travel travel, Account account) {
         Travel newTravel = travelRepository.save(travel);
@@ -103,6 +106,7 @@ public class TravelService {
 
     public void publish(Travel travel) {
         travel.publish();
+        this.eventPublisher.publishEvent(new TravelCreatedEvent(travel));
     }
 
     public void close(Travel travel) {

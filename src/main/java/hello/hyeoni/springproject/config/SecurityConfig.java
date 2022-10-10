@@ -40,23 +40,22 @@ public class SecurityConfig { // extends WebSecurityConfigurerAdapter를 상속 
                 .httpBasic(withDefaults());
 
         http.formLogin()
-                .loginPage("/login")  //로그인 화면 커스텀
+                .loginPage("/login")
                 .permitAll();
 
         http.logout()
-                .logoutSuccessUrl("/"); //로그아웃 성공 후 이동 URL
+                .logoutSuccessUrl("/");
 
         http.rememberMe()
-                .userDetailsService(userDetailsService) // tokenRepository 사용할 때 설정
-                .tokenRepository(tokenRepository()); // 유저정보, 토큰, 시리즈 값을 조합해서 만든 값을 디비에 저장
+                .userDetailsService(userDetailsService)
+                .tokenRepository(tokenRepository());
         return http.build();
     }
 
     @Bean
     public PersistentTokenRepository tokenRepository() {
-        // JDBC 기반의 token repository 구현체
-        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl(); // JdbcTokenRepositoryImpl가 사용하는 테이블 필요함
-        jdbcTokenRepository.setDataSource(dataSource); // jdbc는 dataSource가 필요
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
         return jdbcTokenRepository;
     }
 
