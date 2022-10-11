@@ -3,12 +3,11 @@
 <h3>로그인/로그아웃</h3>
 
 ```java
-//SecurityConfig.java
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests((authz) -> authz
-                               .mvcMatchers("/","/login","/sign-up") // 권한 확인 없이 접근
+                               .mvcMatchers("/","/login","/sign-up") 
                                .permitAll()
                                .mvcMatchers(HttpMethod.GET, "/profile/*").permitAll() 
                                .anyRequest().authenticated()
@@ -16,34 +15,30 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         .httpBasic(withDefaults());
 
     http.formLogin()
-        .loginPage("/login")  //로그인 화면
+        .loginPage("/login")  
         .permitAll();
 
     http.logout()
-        .logoutSuccessUrl("/"); //로그아웃 성공 후 이동 URL
+        .logoutSuccessUrl("/"); 
 
     http.rememberMe()
-        .userDetailsService(userDetailsService) // tokenRepository 사용할 때 설정
+        .userDetailsService(userDetailsService) 
         .tokenRepository(tokenRepository()); 
-    // 유저정보, 토큰, 시리즈 값을 조합해서 만든 값을 디비에 저장
     return http.build();
 }
 
-//AccountService.java
 public class AccountService implements UserDetailsService { 
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // 로그인에 필요한 정보 조회
         Account account = accountRepository.findByEmail(email);
         if (account == null) {
             throw new UsernameNotFoundException(email);
         }
 
-        return new UserAccount(account); // 위에서 만든 principal에 해당하는 객체를 넘기면 됨
+        return new UserAccount(account); 
     }
 }
-// service는 bean으로 등록되어 있기에 security에 설정하지 않아도 자동으로 가져다 사용
 ```
 
 
