@@ -43,7 +43,9 @@ public class TravelRepositoryExtensionImpl extends QuerydslRepositorySupport imp
     @Override
     public List<Travel> findByAccount(Account account) {
         QTravel travel = QTravel.travel;
-        JPQLQuery<Travel> query = from(travel).where(travel.managers.contains(account).or(travel.members.contains(account)));
+        JPQLQuery<Travel> query = from(travel).where(travel.managers.contains(account).or(travel.members.contains(account)))
+                .leftJoin(travel.members, QAccount.account).fetchJoin()
+                .leftJoin(travel.managers, QAccount.account).fetchJoin();
         return query.fetch();
     }
 

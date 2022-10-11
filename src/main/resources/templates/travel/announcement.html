@@ -42,7 +42,7 @@
                                 <tr th:if="${boards.size() > 0}" th:each="board: ${boards}">
                                     <td><span th:text="${board.title}">제목</span>  <span th:if="${board.isManager()}" class="badge badge-primary">관리자</span></td>
                                     <td><span th:text="${board.getNickname}">글쓴이</span></td>
-                                    <td><span th:text="${board.createdDateTime}">날짜</span></td>
+                                    <td><span th:text="${#temporals.format(board.createdDateTime, 'yyyy-MM-dd HH:mm')}">날짜</span></td>
                                     <td class="table-action">
                                         <a th:href="@{'/travel/' + ${travel.path} + '/board/' + ${board.id} + '/edit'}" class="action-icon" th:if="${board.isEditable(#authentication.principal)}"> <i class="mdi mdi-pencil"></i></a>
                                         <a th:href="@{'/travel/' + ${travel.path} + '/board/' + ${board.id} + '/delete'}" class="action-icon" th:if="${board.isEditable(#authentication.principal)}"> <i class="mdi mdi-delete"></i></a>

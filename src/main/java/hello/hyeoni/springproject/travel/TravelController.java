@@ -88,7 +88,7 @@ public class TravelController {
         Travel travel = travelRepository.findByPath(path);
         model.addAttribute(account);
         model.addAttribute(travel);
-        List<Board> boardList = boardRepository.findByTravel(travel);
+        List<Board> boardList = boardRepository.findByTravelOrderByCreatedDateTimeDesc(travel);
         model.addAttribute("boards", boardList);
         return "travel/announcement";
     }

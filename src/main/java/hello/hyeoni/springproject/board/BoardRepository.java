@@ -9,5 +9,5 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    List<Board> findByTravel(Travel travel);
+    List<Board> findByTravelOrderByCreatedDateTimeDesc(Travel travel);
 }
