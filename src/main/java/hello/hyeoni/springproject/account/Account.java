@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Account {
 
     @Id @GeneratedValue
-    private Integer id;
+    private Long id;
 
     @Column(unique = true)
     private String nickname;

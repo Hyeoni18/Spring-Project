@@ -2,6 +2,7 @@ package hello.hyeoni.springproject.travel;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.JPQLQuery;
+import hello.hyeoni.springproject.account.Account;
 import hello.hyeoni.springproject.account.QAccount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,6 +38,13 @@ public class TravelRepositoryExtensionImpl extends QuerydslRepositorySupport imp
         JPQLQuery<Travel> pageableQuery = getQuerydsl().applyPagination(pageable, query);
         QueryResults<Travel> travelQueryResults = pageableQuery.fetchResults();
         return new PageImpl<>(travelQueryResults.getResults(), pageable, travelQueryResults.getTotal());
+    }
+
+    @Override
+    public List<Travel> findByAccount(Account account) {
+        QTravel travel = QTravel.travel;
+        JPQLQuery<Travel> query = from(travel).where(travel.managers.contains(account).or(travel.members.contains(account)));
+        return query.fetch();
     }
 
 }

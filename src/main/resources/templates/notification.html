@@ -52,7 +52,7 @@
                                         <tbody>
                                         <tr th:each="notification : ${watchNotificationList}">
                                             <td>
-                                                <a th:href="@{notification.link}"><h5 class="font-14 mb-1 font-weight-normal" th:text="${notification.title}">
+                                                <a th:href="${notification.link}"><h5 class="font-14 mb-1 font-weight-normal" th:text="${notification.title}">
                                                     알림</h5></a>
                                             </td>
                                         </tr>

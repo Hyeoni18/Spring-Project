@@ -23,6 +23,7 @@ public class NotificationController {
         model.addAttribute("newNotificationList", newNotifications);
         model.addAttribute("watchNotificationList", watchNotifications);
         model.addAttribute("count", newNotifications.size());
+        model.addAttribute(account);
         notificationService.watchNotification(newNotifications);
         return "notification";
     }

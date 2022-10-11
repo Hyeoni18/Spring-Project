@@ -18,7 +18,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDateTime;
-import java.util.Properties;
 
 @Slf4j
 @Async

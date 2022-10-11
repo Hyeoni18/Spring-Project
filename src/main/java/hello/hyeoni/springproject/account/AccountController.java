@@ -2,6 +2,8 @@ package hello.hyeoni.springproject.account;
 
 import hello.hyeoni.springproject.account.form.SignUpForm;
 import hello.hyeoni.springproject.account.validator.SignUpFormValidator;
+import hello.hyeoni.springproject.travel.Travel;
+import hello.hyeoni.springproject.travel.TravelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ public class AccountController {
     private final AccountRepository accountRepository;
     private final SignUpFormValidator signUpFormValidator;
     private final AccountService accountService;
+    private final TravelRepository travelRepository;
 
     @InitBinder("signUpForm")
     public void initBinder(WebDataBinder webDataBinder) {
@@ -84,8 +88,10 @@ public class AccountController {
     @GetMapping("/profile/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
         Account accountToView = accountService.getAccount(nickname);
+        List<Travel> travels = travelRepository.findByAccount(account);
         model.addAttribute(accountToView); // 객체 타입 camelCase를 이름으로 사용
         model.addAttribute("isOwner", accountToView.equals(account));
+        model.addAttribute("travelList", travels);
         return "account/profile";
     }
 
