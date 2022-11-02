@@ -1,7 +1,6 @@
 package hello.hyeoni.springproject.recommendation;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,14 +13,17 @@ import java.net.URI;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Controller
-@RequestMapping(value="/api/recommendations", produces = MediaTypes.HAL_JSON_VALUE)
+@RequestMapping(value = "/api/recommendations", produces = MediaTypes.HAL_JSON_VALUE)
 @RequiredArgsConstructor
 public class RecommendationController {
 
+    private final RecommendationRepository recommendationRepository;
+
     @PostMapping
     public ResponseEntity createLocation(@RequestBody Location location) {
-        URI createdUri = linkTo(RecommendationController.class).slash("{id}").toUri();
-        location.setId(10L);
+        Location newLocation = this.recommendationRepository.save(location);
+
+        URI createdUri = linkTo(RecommendationController.class).slash(newLocation.getId()).toUri();
         return ResponseEntity.created(createdUri).body(location);
     }
 }
